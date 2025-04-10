@@ -114,7 +114,30 @@ public class TelaAmigo
 
     public void Excluir()
     {
+        ExibirCabecalho();
 
+        Console.WriteLine("Excluindo Amigo...");
+        Console.WriteLine("---------------------------------");
+
+        int idAmigo;
+        bool idValido;
+        do
+        {
+            Console.Write("Selecione o ID do amigo que deseja excluir: ");
+            idValido = int.TryParse(Console.ReadLine(), out idAmigo);
+
+            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
+        } while (!idValido);
+
+        bool conseguiuExcluir = repositorioAmigo.Excluir(idAmigo);
+
+        if (!conseguiuExcluir)
+        {
+            Notificador.ExibirMensagem("Erro ao excluir Amigo!", ConsoleColor.Red);
+            return;
+        }
+
+        Notificador.ExibirMensagem("Amigo excluído com sucesso!", ConsoleColor.Green);
     }
 
     public void VisualizarTodos()

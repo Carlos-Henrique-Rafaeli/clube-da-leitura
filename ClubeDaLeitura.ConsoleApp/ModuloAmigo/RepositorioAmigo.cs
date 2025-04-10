@@ -34,9 +34,19 @@ public class RepositorioAmigo
         return true;
     }
 
-    public void Excluir()
+    public bool Excluir(int idAmigo)
     {
+        for (int i = 0; i < amigos.Length; i++)
+        {
+            if (amigos[i] == null) continue;
 
+            if (amigos[i].id == idAmigo)
+            {
+                amigos[i] = null;
+                return true;
+            }
+        }
+        return false;
     }
 
     public void SelecionarTodos()
