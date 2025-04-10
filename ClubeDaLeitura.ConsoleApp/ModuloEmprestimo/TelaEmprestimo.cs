@@ -160,36 +160,38 @@ public class TelaEmprestimo
         Notificador.ExibirMensagem("Revista excluída com sucesso!", ConsoleColor.Green);
     }
 
+    */
+
     public void VisualizarTodos(bool exibirTitulo)
     {
         if (exibirTitulo)
         {
             ExibirCabecalho();
 
-            Console.WriteLine("Visualizando Revistas...");
+            Console.WriteLine("Visualizando Empréstimos...");
             Console.WriteLine("---------------------------------");
         }
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
-            "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
+            "Id", "Amigo", "Revista", "Data de Abertura", "Data de Devolução", "Status"
         );
 
-        Revista[] revistas = repositorioRevista.SelecionarTodos();
+        Emprestimo[] emprestimos = repositorioEmprestimo.SelecionarTodos();
 
-        foreach (Revista r in revistas)
+        foreach (Emprestimo e in emprestimos)
         {
-            if (r == null) continue;
+            if (e == null) continue;
 
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao, r.status, r.caixa.etiqueta
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
+            e.id, e.amigo.nome, e.revista.titulo, e.data.ToShortDateString(), e.ObterDataDevolucao(), e.status
             );
         }
 
         if (exibirTitulo) Console.ReadLine();
     }
-    */
+    
 
     public void VisualizarAmigos()
     {
@@ -280,11 +282,7 @@ public class TelaEmprestimo
             return null;
         }
 
-        DateTime dataEmprestimo = DateTime.Now;
-
-        int dataDevolucao = revista.caixa.diasEmprestimo;
-
-        Emprestimo novoEmprestimo = new Emprestimo(amigo, revista, dataEmprestimo);
+        Emprestimo novoEmprestimo = new Emprestimo(amigo, revista);
 
         return novoEmprestimo;
     }

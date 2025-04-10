@@ -9,12 +9,14 @@ public class Emprestimo
     public Amigo amigo;
     public Revista revista;
     public DateTime data;
+    public StatusEmprestimo status;
 
-    public Emprestimo(Amigo amigo, Revista revista, DateTime data)
+    public Emprestimo(Amigo amigo, Revista revista)
     {
         this.amigo = amigo;
         this.revista = revista;
-        this.data = data;
+        this.data = DateTime.Now;
+        this.status = StatusEmprestimo.Aberto;
     }
 
     public string Validar()
@@ -30,9 +32,10 @@ public class Emprestimo
         return erros;
     }
 
-    public void ObterDataDevolucao()
+    public string ObterDataDevolucao()
     {
-
+        DateTime dataDevolucao = data.AddDays(revista.caixa.diasEmprestimo);
+        return dataDevolucao.ToShortDateString();
     }
 
     public void RegistrarDevolucao()

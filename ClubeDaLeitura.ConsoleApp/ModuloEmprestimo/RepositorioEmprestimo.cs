@@ -25,9 +25,9 @@ public class RepositorioEmprestimo
 
     }
 
-    public void SelecionarTodos()
+    public Emprestimo[] SelecionarTodos()
     {
-
+        return emprestimos;
     }
 
     public void SelecionarPorId()
