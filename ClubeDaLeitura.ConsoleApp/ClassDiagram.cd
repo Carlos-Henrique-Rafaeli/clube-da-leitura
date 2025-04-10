@@ -31,57 +31,57 @@
   <Class Name="ClubeDaLeitura.ConsoleApp.ModuloAmigo.RepositorioAmigo">
     <Position X="3.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAAAAAAAAAAAAAAEAAAAAQAAAAAAAAABAAAAAAFQAAA=</HashCode>
       <FileName>ModuloAmigo\RepositorioAmigo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ClubeDaLeitura.ConsoleApp.ModuloAmigo.TelaAmigo">
-    <Position X="3.25" Y="3.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ModuloAmigo\TelaAmigo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ClubeDaLeitura.ConsoleApp.ModuloCaixa.RepositorioCaixa">
     <Position X="5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEABAAAQAAgAAAAAABAAAAAAEQAAA=</HashCode>
       <FileName>ModuloCaixa\RepositorioCaixa.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ClubeDaLeitura.ConsoleApp.ModuloCaixa.TelaCaixa">
     <Position X="5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ModuloCaixa\TelaCaixa.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ClubeDaLeitura.ConsoleApp.ModuloEmprestimo.TelaEmprestimo">
     <Position X="6.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAEAAAAAQAAAAQAACAAAAAAAAAQAAA=</HashCode>
       <FileName>ModuloEmprestimo\TelaEmprestimo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ClubeDaLeitura.ConsoleApp.ModuloEmprestimo.RepositorioEmprestimo">
     <Position X="6.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAABEAAAAAQAAAAAAAAABAAAAAAEQABA=</HashCode>
       <FileName>ModuloEmprestimo\RepositorioEmprestimo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ClubeDaLeitura.ConsoleApp.ModuloRevista.RepositorioRevista">
     <Position X="8.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAQAAAAAAAAABAgAAgAEQAAA=</HashCode>
       <FileName>ModuloRevista\RepositorioRevista.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ClubeDaLeitura.ConsoleApp.ModuloRevista.TelaRevista">
     <Position X="8.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
       <FileName>ModuloRevista\TelaRevista.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClubeDaLeitura.ConsoleApp.ModuloAmigo.TelaAmigo">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAABAAAAEAAAAAQAAAAAAAgAAAAAAAAAQAAA=</HashCode>
+      <FileName>ModuloAmigo\TelaAmigo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

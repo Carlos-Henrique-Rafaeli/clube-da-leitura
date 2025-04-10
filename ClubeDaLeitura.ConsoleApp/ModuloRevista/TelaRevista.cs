@@ -1,5 +1,15 @@
-﻿namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
+﻿using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-class TelaRevista
+namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
+
+public class TelaRevista
 {
+    RepositorioRevista repositorioRevista;
+    RepositorioCaixa repositorioCaixa;
+
+    public TelaRevista(RepositorioRevista repositorioRevista, RepositorioCaixa repositorioCaixa)
+    {
+        this.repositorioRevista = repositorioRevista;
+        this.repositorioCaixa = repositorioCaixa;
+    }
 }

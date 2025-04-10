@@ -1,5 +1,11 @@
 ﻿namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-class TelaCaixa
+public class TelaCaixa
 {
+    RepositorioCaixa repositorioCaixa;
+
+    public TelaCaixa(RepositorioCaixa repositorioCaixa)
+    {
+        this.repositorioCaixa = repositorioCaixa;
+    }
 }
