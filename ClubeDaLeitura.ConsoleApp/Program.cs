@@ -9,8 +9,10 @@ internal class Program
     static void Main(string[] args)
     {
         RepositorioAmigo repositorioAmigo = new RepositorioAmigo();
+        RepositorioCaixa repositorioCaixa = new RepositorioCaixa();
 
         TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
+        TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
 
 
         while (true)
@@ -36,6 +38,24 @@ internal class Program
 
                             case "4": telaAmigo.VisualizarTodos(true); break;
                             
+                            case "S": deveRodar = false; break;
+
+                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
+                        }
+                    }
+                    break;
+
+                case "2":
+                    while (deveRodar)
+                    {
+                        opcaoSelecionada = telaCaixa.ApresentarMenu();
+
+                        switch (opcaoSelecionada)
+                        {
+                            case "1": telaCaixa.Inserir(); break;
+
+                          
+
                             case "S": deveRodar = false; break;
 
                             default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
