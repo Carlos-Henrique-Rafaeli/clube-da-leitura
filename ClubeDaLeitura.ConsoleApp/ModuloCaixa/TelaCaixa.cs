@@ -176,11 +176,11 @@ public class TelaCaixa
         {
             if (c == null) continue;
 
-            Console.ForegroundColor = CorParaConsoleColor(c.cor);
+            Console.ForegroundColor = GerenciadorDeCor.CorParaConsoleColor(c.cor);
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -10} | {3, -15}",
-            c.id, c.etiqueta, CorParaString(c.cor), c.diasEmprestimo
+            c.id, c.etiqueta, GerenciadorDeCor.CorParaString(c.cor), c.diasEmprestimo
             );
             Console.ResetColor();
         }
@@ -254,31 +254,5 @@ public class TelaCaixa
         string opcao = Console.ReadLine()!;
 
         return opcao;
-    }
-
-    public ConsoleColor CorParaConsoleColor(Color cor)
-    {
-        ConsoleColor consoleCor;
-
-        if (cor == Color.Red) consoleCor = ConsoleColor.Red;
-        else if (cor == Color.Green) consoleCor = ConsoleColor.Green;
-        else if (cor == Color.Blue) consoleCor = ConsoleColor.Blue;
-        else if (cor == Color.Yellow) consoleCor = ConsoleColor.Yellow;
-        else consoleCor = ConsoleColor.White;
-
-        return consoleCor;
-    }
-
-    public string CorParaString(Color cor)
-    {
-        string corString;
-
-        if (cor == Color.Red) corString = "Vermelho";
-        else if (cor == Color.Green) corString = "Verde";
-        else if (cor == Color.Blue) corString = "Azul";
-        else if (cor == Color.Yellow) corString = "Amarelo";
-        else corString = "Branco";
-
-        return corString;
     }
 }

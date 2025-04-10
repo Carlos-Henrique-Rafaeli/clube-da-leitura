@@ -1,6 +1,7 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp;
 
@@ -10,10 +11,11 @@ internal class Program
     {
         RepositorioAmigo repositorioAmigo = new RepositorioAmigo();
         RepositorioCaixa repositorioCaixa = new RepositorioCaixa();
+        RepositorioRevista repositorioRevista = new RepositorioRevista();
 
         TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
         TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
-
+        TelaRevista telaRevista = new TelaRevista(repositorioRevista, repositorioCaixa);
 
         while (true)
         {
@@ -59,6 +61,22 @@ internal class Program
                             case "3": telaCaixa.Excluir(); break;
                             
                             case "4": telaCaixa.Visualizar(true); break;
+
+                            case "S": deveRodar = false; break;
+
+                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
+                        }
+                    }
+                    break;
+                
+                case "3":
+                    while (deveRodar)
+                    {
+                        opcaoSelecionada = telaRevista.ApresentarMenu();
+
+                        switch (opcaoSelecionada)
+                        {
+                            case "1": telaRevista.Inserir(); break;
 
                             case "S": deveRodar = false; break;
 
