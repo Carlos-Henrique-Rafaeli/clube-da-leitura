@@ -1,5 +1,17 @@
 ﻿namespace ClubeDaLeitura.ConsoleApp.Compartilhado;
 
-class GeradorIds
+public static class GeradorIds
 {
+    public static int idAmigo = 0;
+    public static int idCaixa = 0;
+    public static int idEmprestimo = 0;
+    public static int idRevista = 0;
+
+
+    public static int GerarIdAmigo()
+    {
+        idAmigo++;
+        return idAmigo;
+    }
+
 }
