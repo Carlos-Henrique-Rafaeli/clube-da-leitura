@@ -117,51 +117,49 @@ public class TelaEmprestimo
 
         if (!conseguiuEditar)
         {
-            Notificador.ExibirMensagem("Erro ao editar Revista!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Erro ao editar Empréstimo!", ConsoleColor.Red);
             return;
         }
 
-        Notificador.ExibirMensagem("Revista editada com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("Empréstimo editada com sucesso!", ConsoleColor.Green);
 
     }
-    /*
+    
     public void Excluir()
     {
         ExibirCabecalho();
 
-        Console.WriteLine("Excluindo Revista...");
+        Console.WriteLine("Excluindo Empréstimo...");
         Console.WriteLine("---------------------------------");
 
         VisualizarTodos(false);
 
-        int idRevista;
+        int idEmprestimo;
         bool idValido;
         do
         {
-            Console.Write("Selecione o ID da revista que deseja excluir: ");
-            idValido = int.TryParse(Console.ReadLine(), out idRevista);
+            Console.Write("Selecione o ID da Empréstimo que deseja excluir: ");
+            idValido = int.TryParse(Console.ReadLine(), out idEmprestimo);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioRevista.SelecionarPorId(idRevista) == null)
+        if (repositorioRevista.SelecionarPorId(idEmprestimo) == null)
         {
-            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
+            Notificador.ExibirMensagem($"Não existe Empréstimo com o id {idEmprestimo}!", ConsoleColor.Red);
             return;
         }
 
-        bool conseguiuExcluir = repositorioRevista.Excluir(idRevista);
+        bool conseguiuExcluir = repositorioEmprestimo.Excluir(idEmprestimo);
 
         if (!conseguiuExcluir)
         {
-            Notificador.ExibirMensagem("Erro ao excluir Revista!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Erro ao excluir Empréstimo!", ConsoleColor.Red);
             return;
         }
 
-        Notificador.ExibirMensagem("Revista excluída com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("Empréstimo excluída com sucesso!", ConsoleColor.Green);
     }
-
-    */
 
     public void VisualizarTodos(bool exibirTitulo)
     {

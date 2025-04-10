@@ -35,9 +35,19 @@ public class RepositorioEmprestimo
         return false;
     }
 
-    public void Excluir()
+    public bool Excluir(int idEmprestimo)
     {
+        for (int i = 0; i < emprestimos.Length; i++)
+        {
+            if (emprestimos[i] == null) continue;
 
+            if (emprestimos[i].id == idEmprestimo)
+            {
+                emprestimos[i] = null;
+                return true;
+            }
+        }
+        return false;
     }
 
     public Emprestimo[] SelecionarTodos()
