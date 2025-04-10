@@ -5,23 +5,29 @@ namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
 public class Emprestimo
 {
-    int id;
-    Amigo amigo;
-    Revista revista;
-    DateTime data;
-    bool situacao;
+    public int id;
+    public Amigo amigo;
+    public Revista revista;
+    public DateTime data;
 
-    public Emprestimo(Amigo amigo, Revista revista, DateTime data, bool situacao)
+    public Emprestimo(Amigo amigo, Revista revista, DateTime data)
     {
         this.amigo = amigo;
         this.revista = revista;
         this.data = data;
-        this.situacao = situacao;
     }
 
-    public void Validar()
+    public string Validar()
     {
+        string erros = "";
 
+        if (amigo == null) erros += "O campo 'Amigo' está inválido\n";
+        
+        if (revista == null) erros += "O campo 'Revista' está inválido\n";
+        
+        else if (revista.status != StatusRevista.Disponível) erros += "O campo 'Revista' não está disponível\n";
+
+        return erros;
     }
 
     public void ObterDataDevolucao()

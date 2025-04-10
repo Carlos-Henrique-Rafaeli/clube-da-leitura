@@ -24,4 +24,10 @@ public static class GeradorIds
         idRevista++;
         return idRevista;
     }
+
+    public static int GerarIdEmprestimo()
+    {
+        idEmprestimo++;
+        return idEmprestimo;
+    }
 }

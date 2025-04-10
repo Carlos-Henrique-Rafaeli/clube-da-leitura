@@ -1,6 +1,7 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp;
@@ -12,10 +13,12 @@ internal class Program
         RepositorioAmigo repositorioAmigo = new RepositorioAmigo();
         RepositorioCaixa repositorioCaixa = new RepositorioCaixa();
         RepositorioRevista repositorioRevista = new RepositorioRevista();
+        RepositorioEmprestimo repositorioEmprestimo = new RepositorioEmprestimo();
 
         TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
         TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
         TelaRevista telaRevista = new TelaRevista(repositorioRevista, repositorioCaixa);
+        TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista);
 
         while (true)
         {
@@ -84,6 +87,28 @@ internal class Program
 
                             case "4": telaRevista.VisualizarTodos(true); break;
 
+                            case "S": deveRodar = false; break;
+
+                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
+                        }
+                    }
+                    break;
+
+                case "4":
+                    while (deveRodar)
+                    {
+                        opcaoSelecionada = telaEmprestimo.ApresentarMenu();
+
+                        switch (opcaoSelecionada)
+                        {
+                            case "1": telaEmprestimo.Inserir(); break;
+                                /*
+                            case "2": telaEmprestimo.Editar(); break;
+
+                            case "3": telaEmprestimo.Excluir(); break;
+
+                            case "4": telaEmprestimo.VisualizarTodos(true); break;
+                                */
                             case "S": deveRodar = false; break;
 
                             default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;

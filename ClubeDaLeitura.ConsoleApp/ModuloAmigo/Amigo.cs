@@ -1,4 +1,6 @@
-﻿namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+﻿using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
+
+namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
 public class Amigo
 {
@@ -6,7 +8,7 @@ public class Amigo
     public string nome;
     public string responsavel;
     public string telefone;
-
+    
     private int[] telefoneValido = [12, 13];
 
     public Amigo(string nome, string responsavel, string telefone)
