@@ -1,5 +1,6 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
@@ -35,19 +36,36 @@ public class RepositorioRevista
         return false;
     }
 
-    public void Excluir()
+    public bool Excluir(int idRevista)
     {
+        for (int i = 0; i < revistas.Length; i++)
+        {
+            if (revistas[i] == null) continue;
 
+            if (revistas[i].id == idRevista && revistas[i].status == StatusRevista.Disponível)
+            {
+                revistas[i] = null;
+
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void SelecionarTodos()
+    public Revista[] SelecionarTodos()
     {
-
+        return revistas;
     }
 
-    public void SelecionarPorId()
+    public Revista SelecionarPorId(int idRevista)
     {
+        foreach (Revista r in revistas)
+        {
+            if (r == null) continue;
 
+            if (r.id == idRevista) return r;
+        }
+        return null;
     }
 
     public bool VerificarTituloEdicao(string titulo, int edicao, int id = -1)

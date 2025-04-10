@@ -72,7 +72,7 @@ public class TelaRevista
         Console.WriteLine("Editando Revista...");
         Console.WriteLine("---------------------------------");
 
-        //Visualizar(false);
+        VisualizarTodos(false);
 
         int idRevista;
         bool idValido;
@@ -84,7 +84,7 @@ public class TelaRevista
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioCaixa.SelecionarPorId(idRevista) == null)
+        if (repositorioRevista.SelecionarPorId(idRevista) == null)
         {
             Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
             return;
@@ -122,76 +122,72 @@ public class TelaRevista
         Notificador.ExibirMensagem("Revista editada com sucesso!", ConsoleColor.Green);
 
     }
-    /*
+    
     public void Excluir()
     {
         ExibirCabecalho();
 
-        Console.WriteLine("Excluindo Caixa...");
+        Console.WriteLine("Excluindo Revista...");
         Console.WriteLine("---------------------------------");
 
-        Visualizar(false);
+        VisualizarTodos(false);
 
-        int idCaixa;
+        int idRevista;
         bool idValido;
         do
         {
-            Console.Write("Selecione o ID da caixa que deseja excluir: ");
-            idValido = int.TryParse(Console.ReadLine(), out idCaixa);
+            Console.Write("Selecione o ID da revista que deseja excluir: ");
+            idValido = int.TryParse(Console.ReadLine(), out idRevista);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioCaixa.SelecionarPorId(idCaixa) == null)
+        if (repositorioRevista.SelecionarPorId(idRevista) == null)
         {
-            Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
+            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
             return;
         }
 
-        bool conseguiuExcluir = repositorioCaixa.Excluir(idCaixa);
+        bool conseguiuExcluir = repositorioRevista.Excluir(idRevista);
 
         if (!conseguiuExcluir)
         {
-            Notificador.ExibirMensagem("Erro ao excluir Caixa!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Erro ao excluir Revista!", ConsoleColor.Red);
             return;
         }
 
-        Notificador.ExibirMensagem("Caixa excluída com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("Revista excluída com sucesso!", ConsoleColor.Green);
     }
-
-    public void Visualizar(bool exibirTitulo)
+    
+    public void VisualizarTodos(bool exibirTitulo)
     {
         if (exibirTitulo)
         {
             ExibirCabecalho();
 
-            Console.WriteLine("Visualizando Caixas...");
+            Console.WriteLine("Visualizando Revistas...");
             Console.WriteLine("---------------------------------");
         }
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15}",
-            "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
+            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
+            "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        Caixa[] caixas = repositorioCaixa.SelecionarTodos();
+        Revista[] revistas = repositorioRevista.SelecionarTodos();
 
-        foreach (Caixa c in caixas)
+        foreach (Revista r in revistas)
         {
-            if (c == null) continue;
-
-            Console.ForegroundColor = CorParaConsoleColor(c.cor);
+            if (r == null) continue;
 
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15}",
-            c.id, c.etiqueta, CorParaString(c.cor), c.diasEmprestimo
+            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
+            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao, r.status, r.caixa.etiqueta
             );
-            Console.ResetColor();
         }
 
         if (exibirTitulo) Console.ReadLine();
     }
-    */
 
     public void VisualizarCaixas()
     {

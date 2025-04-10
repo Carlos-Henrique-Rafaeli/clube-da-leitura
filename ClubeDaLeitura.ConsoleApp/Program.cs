@@ -79,6 +79,10 @@ internal class Program
                             case "1": telaRevista.Inserir(); break;
                             
                             case "2": telaRevista.Editar(); break;
+                            
+                            case "3": telaRevista.Excluir(); break;
+
+                            case "4": telaRevista.VisualizarTodos(true); break;
 
                             case "S": deveRodar = false; break;
 
