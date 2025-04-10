@@ -105,42 +105,42 @@ public class TelaCaixa
 
         if (!conseguiuEditar)
         {
-            Notificador.ExibirMensagem("Erro ao editar a Caixa!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Erro ao editar Caixa!", ConsoleColor.Red);
             return;
         }
 
         Notificador.ExibirMensagem("Caixa editada com sucesso!", ConsoleColor.Green);
 
     }
-    /*
+    
     public void Excluir()
     {
         ExibirCabecalho();
 
-        Console.WriteLine("Excluindo Amigo...");
+        Console.WriteLine("Excluindo Caixa...");
         Console.WriteLine("---------------------------------");
 
-        int idAmigo;
+        int idCaixa;
         bool idValido;
         do
         {
-            Console.Write("Selecione o ID do amigo que deseja excluir: ");
-            idValido = int.TryParse(Console.ReadLine(), out idAmigo);
+            Console.Write("Selecione o ID da caixa que deseja excluir: ");
+            idValido = int.TryParse(Console.ReadLine(), out idCaixa);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        bool conseguiuExcluir = repositorioAmigo.Excluir(idAmigo);
+        bool conseguiuExcluir = repositorioCaixa.Excluir(idCaixa);
 
         if (!conseguiuExcluir)
         {
-            Notificador.ExibirMensagem("Erro ao excluir Amigo!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Erro ao excluir Caixa!", ConsoleColor.Red);
             return;
         }
 
-        Notificador.ExibirMensagem("Amigo excluído com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("Caixa excluída com sucesso!", ConsoleColor.Green);
     }
-
+    /*
     public void VisualizarTodos(bool exibirTitulo)
     {
         if (exibirTitulo)

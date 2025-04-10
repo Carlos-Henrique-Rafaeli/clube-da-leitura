@@ -37,9 +37,20 @@ public class RepositorioCaixa
 
     }
 
-    public void Excluir()
+    public bool Excluir(int idCaixa)
     {
+        for (int i = 0; i < caixas.Length; i++)
+        {
+            if (caixas[i] == null) continue;
 
+            if (caixas[i].id == idCaixa)
+            {
+                caixas[i] = null;
+
+                return true;
+            }
+        }
+        return false;
     }
 
     public void SelecionarTodos()
