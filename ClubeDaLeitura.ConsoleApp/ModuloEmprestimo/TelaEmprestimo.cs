@@ -25,6 +25,7 @@ public class TelaEmprestimo
         Console.WriteLine("2 - Editar Empréstimo");
         Console.WriteLine("3 - Excluir Empréstimo");
         Console.WriteLine("4 - Visualizar Empréstimos");
+        Console.WriteLine("5 - Quitar Empréstimo");
         Console.WriteLine("S - Voltar ao Menu");
         Console.WriteLine();
 
@@ -40,7 +41,7 @@ public class TelaEmprestimo
         Console.WriteLine("Cadastrando Empréstimo...");
         Console.WriteLine("---------------------------------");
 
-        Emprestimo novoEmprestimo = ObterDadosEmprestimo();
+        Emprestimo novoEmprestimo = ObterDadosEmprestimo(false);
 
         if (novoEmprestimo == null) return;
 
@@ -65,37 +66,37 @@ public class TelaEmprestimo
         Notificador.ExibirMensagem("Empréstimo adicionado com sucesso!", ConsoleColor.Green);
     }
 
-    /*
+    
     public void Editar()
     {
         ExibirCabecalho();
 
-        Console.WriteLine("Editando Revista...");
+        Console.WriteLine("Editando Empréstimo...");
         Console.WriteLine("---------------------------------");
 
         VisualizarTodos(false);
 
-        int idRevista;
+        int idEmprestimo;
         bool idValido;
         do
         {
-            Console.Write("Selecione o ID da revista que deseja editar: ");
-            idValido = int.TryParse(Console.ReadLine(), out idRevista);
+            Console.Write("Selecione o ID do Emprestimo que deseja editar: ");
+            idValido = int.TryParse(Console.ReadLine(), out idEmprestimo);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioRevista.SelecionarPorId(idRevista) == null)
+        if (repositorioEmprestimo.SelecionarPorId(idEmprestimo) == null)
         {
-            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
+            Notificador.ExibirMensagem($"Não existe Revista com o id {idEmprestimo}!", ConsoleColor.Red);
             return;
         }
 
-        Revista revistaEditada = ObterDadosCaixa(true);
+        Emprestimo emprestimoEditado = ObterDadosEmprestimo(true);
 
-        if (revistaEditada == null) return;
+        if (emprestimoEditado == null) return;
 
-        string erros = revistaEditada.Validar();
+        string erros = emprestimoEditado.Validar();
 
         if (erros.Length > 0)
         {
@@ -104,15 +105,15 @@ public class TelaEmprestimo
             return;
         }
 
-        bool verificacao = repositorioRevista.VerificarTituloEdicao(revistaEditada.titulo, revistaEditada.numeroEdicao, idRevista);
+        bool verificacao = repositorioEmprestimo.VerificarEmprestimo(emprestimoEditado, idEmprestimo);
 
         if (verificacao)
         {
-            Notificador.ExibirMensagem("Já existe uma revista com o mesmo título e número de edição!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("O amigo selecionado já contém um empréstimo!", ConsoleColor.Red);
             return;
         }
 
-        bool conseguiuEditar = repositorioRevista.Editar(idRevista, revistaEditada);
+        bool conseguiuEditar = repositorioEmprestimo.Editar(idEmprestimo, emprestimoEditado);
 
         if (!conseguiuEditar)
         {
@@ -123,7 +124,7 @@ public class TelaEmprestimo
         Notificador.ExibirMensagem("Revista editada com sucesso!", ConsoleColor.Green);
 
     }
-
+    /*
     public void Excluir()
     {
         ExibirCabecalho();
@@ -241,7 +242,7 @@ public class TelaEmprestimo
         }
     }
 
-    public Emprestimo ObterDadosEmprestimo()
+    public Emprestimo ObterDadosEmprestimo(bool editarData)
     {
         VisualizarAmigos();
 
@@ -282,9 +283,28 @@ public class TelaEmprestimo
             return null;
         }
 
-        Emprestimo novoEmprestimo = new Emprestimo(amigo, revista);
+        if (editarData)
+        {
+            DateTime dataEditada;
+            bool dataValida;
+            do
+            {
+                Console.Write("Digite a data do empréstimo: ");
+                dataValida = DateTime.TryParse(Console.ReadLine(), out dataEditada);
 
-        return novoEmprestimo;
+                if (!dataValida) Notificador.ExibirMensagem("Data Inválida!", ConsoleColor.Red);
+            } while (!dataValida);
+
+            Emprestimo novoEmprestimo = new Emprestimo(amigo, revista, dataEditada);
+
+            return novoEmprestimo;
+        }
+        else
+        {
+            Emprestimo novoEmprestimo = new Emprestimo(amigo, revista, DateTime.Now);
+
+            return novoEmprestimo;
+        }
     }
     public void ExibirCabecalho()
     {

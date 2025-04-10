@@ -102,11 +102,11 @@ internal class Program
                         switch (opcaoSelecionada)
                         {
                             case "1": telaEmprestimo.Inserir(); break;
-                            /*
-                        case "2": telaEmprestimo.Editar(); break;
+                            
+                            case "2": telaEmprestimo.Editar(); break;
 
-                        case "3": telaEmprestimo.Excluir(); break;
-                            */
+                            //case "3": telaEmprestimo.Excluir(); break;
+                            
                             case "4": telaEmprestimo.VisualizarTodos(true); break;
                                 
                             case "S": deveRodar = false; break;

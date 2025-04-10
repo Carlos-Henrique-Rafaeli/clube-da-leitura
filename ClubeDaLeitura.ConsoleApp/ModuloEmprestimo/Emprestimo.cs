@@ -11,11 +11,11 @@ public class Emprestimo
     public DateTime data;
     public StatusEmprestimo status;
 
-    public Emprestimo(Amigo amigo, Revista revista)
+    public Emprestimo(Amigo amigo, Revista revista, DateTime data)
     {
         this.amigo = amigo;
         this.revista = revista;
-        this.data = DateTime.Now;
+        this.data = data;
         this.status = StatusEmprestimo.Aberto;
     }
 
