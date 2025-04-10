@@ -77,6 +77,8 @@ internal class Program
                         switch (opcaoSelecionada)
                         {
                             case "1": telaRevista.Inserir(); break;
+                            
+                            case "2": telaRevista.Editar(); break;
 
                             case "S": deveRodar = false; break;
 

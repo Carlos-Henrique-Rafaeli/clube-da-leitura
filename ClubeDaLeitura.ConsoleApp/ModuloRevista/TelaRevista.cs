@@ -39,7 +39,7 @@ public class TelaRevista
         Console.WriteLine("Cadastrando Revista...");
         Console.WriteLine("---------------------------------");
 
-        Revista novaRevista = ObterDadosCaixa();
+        Revista novaRevista = ObterDadosCaixa(false);
 
         if (novaRevista == null) return;
 
@@ -64,63 +64,65 @@ public class TelaRevista
         Notificador.ExibirMensagem("Revista adicionada com sucesso!", ConsoleColor.Green);
     }
 
-    /*
+    
     public void Editar()
     {
         ExibirCabecalho();
 
-        Console.WriteLine("Editando Amigo...");
+        Console.WriteLine("Editando Revista...");
         Console.WriteLine("---------------------------------");
 
-        Visualizar(false);
+        //Visualizar(false);
 
-        int idCaixa;
+        int idRevista;
         bool idValido;
         do
         {
-            Console.Write("Selecione o ID da caixa que deseja editar: ");
-            idValido = int.TryParse(Console.ReadLine(), out idCaixa);
+            Console.Write("Selecione o ID da revista que deseja editar: ");
+            idValido = int.TryParse(Console.ReadLine(), out idRevista);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioCaixa.SelecionarPorId(idCaixa) == null)
+        if (repositorioCaixa.SelecionarPorId(idRevista) == null)
         {
-            Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
+            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
             return;
         }
 
-        Caixa caixaEditada = ObterDadosCaixa();
+        Revista revistaEditada = ObterDadosCaixa(true);
 
-        string erros = caixaEditada.Validar();
+        if (revistaEditada == null) return;
+
+        string erros = revistaEditada.Validar();
 
         if (erros.Length > 0)
         {
             Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Editar();
+            Inserir();
             return;
         }
 
-        bool verificacao = repositorioCaixa.VerificarEtiqueta(caixaEditada.etiqueta, idCaixa);
+        bool verificacao = repositorioRevista.VerificarTituloEdicao(revistaEditada.titulo, revistaEditada.numeroEdicao, idRevista);
 
         if (verificacao)
         {
-            Notificador.ExibirMensagem("Já existe uma caixa com a mesma etiqueta!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Já existe uma revista com o mesmo título e número de edição!", ConsoleColor.Red);
             return;
         }
 
-        bool conseguiuEditar = repositorioCaixa.Editar(idCaixa, caixaEditada);
+        bool conseguiuEditar = repositorioRevista.Editar(idRevista, revistaEditada);
 
         if (!conseguiuEditar)
         {
-            Notificador.ExibirMensagem("Erro ao editar Caixa!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Erro ao editar Revista!", ConsoleColor.Red);
             return;
         }
 
-        Notificador.ExibirMensagem("Caixa editada com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("Revista editada com sucesso!", ConsoleColor.Green);
 
     }
-
+    /*
     public void Excluir()
     {
         ExibirCabecalho();
@@ -218,7 +220,7 @@ public class TelaRevista
         }
     }
 
-    public Revista ObterDadosCaixa()
+    public Revista ObterDadosCaixa(bool editarStatus)
     {
         Console.Write("Digite o título da Revista: ");
         string titulo = Console.ReadLine()!;
@@ -258,17 +260,26 @@ public class TelaRevista
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioCaixa.SelecionarPorId(idCaixa) == null)
+        Caixa caixa = repositorioCaixa.SelecionarPorId(idCaixa);
+
+        if (caixa == null)
         {
             Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
             return null;
         }
 
-        Caixa caixa = repositorioCaixa.SelecionarPorId(idCaixa);
+        if (editarStatus)
+        {
+            StatusRevista novoStatus = ExibirStatus();
+            Revista revista = new Revista(titulo, numeroEdicao, dataLancamento, caixa, novoStatus);
+            return revista;
+        }
+        else
+        {
+            Revista revista = new Revista(titulo, numeroEdicao, dataLancamento, caixa);
 
-        Revista revista = new Revista(titulo, numeroEdicao, dataLancamento, caixa);
-
-        return revista;
+            return revista;
+        }
     }
 
     public void ExibirCabecalho()
@@ -278,5 +289,33 @@ public class TelaRevista
         Console.WriteLine("|      Controle de Revistas     |");
         Console.WriteLine("---------------------------------");
         Console.WriteLine();
+    }
+
+
+    public StatusRevista ExibirStatus()
+    {
+        Console.WriteLine();
+
+        Console.WriteLine("1 - Disponível");
+        Console.WriteLine("2 - Emprestada");
+        Console.WriteLine("3 - Reservada");
+        Console.WriteLine();
+
+        int opcao;
+        bool opcaoValida;
+        do
+        {
+            Console.Write("Escolha o Status: ");
+            opcaoValida = int.TryParse(Console.ReadLine(), out opcao);
+
+            if (!opcaoValida || opcao < 1 || opcao > 3)
+            {
+                Notificador.ExibirMensagem("Opção Inválida!", ConsoleColor.Red);
+                opcaoValida = false;
+            }
+        } while (!opcaoValida);
+
+
+        return (StatusRevista)(opcao - 1);
     }
 }

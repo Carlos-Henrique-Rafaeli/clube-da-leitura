@@ -15,9 +15,24 @@ public class RepositorioRevista
         revistas[contadorRevistas++] = novaRevista;
     }
 
-    public void Editar()
+    public bool Editar(int idRevista, Revista revistaEditada)
     {
+        foreach (Revista r in revistas)
+        {
+            if (r == null) continue;
 
+            if (r.id == idRevista)
+            {
+                r.titulo = revistaEditada.titulo;
+                r.numeroEdicao = revistaEditada.numeroEdicao;
+                r.dataPublicacao = revistaEditada.dataPublicacao;
+                r.status = revistaEditada.status;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void Excluir()

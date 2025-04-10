@@ -8,15 +8,16 @@ public class Revista
     public string titulo;
     public int numeroEdicao;
     public DateTime dataPublicacao;
-    public StatusRevista status = StatusRevista.Disponível;
+    public StatusRevista status;
     public Caixa caixa;
 
-    public Revista(string titulo, int numeroEdicao, DateTime dataPublicacao, Caixa caixa)
+    public Revista(string titulo, int numeroEdicao, DateTime dataPublicacao, Caixa caixa, StatusRevista status = StatusRevista.Disponível)
     {
         this.titulo = titulo;
         this.numeroEdicao = numeroEdicao;
         this.dataPublicacao = dataPublicacao;
         this.caixa = caixa;
+        this.status = status;
     }
 
     public string Validar()
