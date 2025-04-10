@@ -34,7 +34,7 @@ internal class Program
                             
                             case "3": telaAmigo.Excluir(); break;
 
-                            case "4": telaAmigo.VisualizarTodos(); break;
+                            case "4": telaAmigo.VisualizarTodos(true); break;
                             
                             case "S": deveRodar = false; break;
 

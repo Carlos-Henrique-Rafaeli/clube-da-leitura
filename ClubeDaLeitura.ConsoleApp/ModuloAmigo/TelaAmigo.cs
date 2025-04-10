@@ -69,6 +69,8 @@ public class TelaAmigo
         Console.WriteLine("Editando Amigo...");
         Console.WriteLine("---------------------------------");
 
+        VisualizarTodos(false);
+
         int idAmigo;
         bool idValido;
         do
@@ -140,9 +142,34 @@ public class TelaAmigo
         Notificador.ExibirMensagem("Amigo excluído com sucesso!", ConsoleColor.Green);
     }
 
-    public void VisualizarTodos()
+    public void VisualizarTodos(bool exibirTitulo)
     {
+        if (exibirTitulo)
+        {
+            ExibirCabecalho();
 
+            Console.WriteLine("Visualizando Amigos...");
+            Console.WriteLine("---------------------------------");
+        }
+
+        Console.WriteLine(
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
+            "Id", "Nome", "Responsável", "Telefone", "Empréstimo"
+        );
+
+        Amigo[] amigos = repositorioAmigo.SelecionarTodos();
+
+        foreach (Amigo a in amigos)
+        {
+            if (a == null) continue;
+
+            Console.WriteLine(
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
+            a.id, a.nome, a.responsavel, a.telefone, "Empréstimo"
+            );
+        }
+
+        if (exibirTitulo) Console.ReadLine();
     }
 
     public void VisualizarEmprestimos()

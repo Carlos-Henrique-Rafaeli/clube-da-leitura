@@ -49,9 +49,9 @@ public class RepositorioAmigo
         return false;
     }
 
-    public void SelecionarTodos()
+    public Amigo[] SelecionarTodos()
     {
-
+        return amigos;
     }
 
     public void SelecionarPorId()
