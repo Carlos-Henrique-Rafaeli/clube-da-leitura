@@ -1,5 +1,6 @@
 ﻿
 using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
@@ -81,6 +82,12 @@ public class TelaAmigo
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
+        if (repositorioAmigo.SelecionarPorId(idAmigo) == null)
+        {
+            Notificador.ExibirMensagem($"Não existe Amigo com o id {idAmigo}!", ConsoleColor.Red);
+            return;
+        }
+
         Amigo amigoEditado = ObterDadosAmigo();
 
         string erros = amigoEditado.Validar();
@@ -121,6 +128,8 @@ public class TelaAmigo
         Console.WriteLine("Excluindo Amigo...");
         Console.WriteLine("---------------------------------");
 
+        VisualizarTodos(false);
+
         int idAmigo;
         bool idValido;
         do
@@ -130,6 +139,12 @@ public class TelaAmigo
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
+
+        if (repositorioAmigo.SelecionarPorId(idAmigo) == null)
+        {
+            Notificador.ExibirMensagem($"Não existe Amigo com o id {idAmigo}!", ConsoleColor.Red);
+            return;
+        }
 
         bool conseguiuExcluir = repositorioAmigo.Excluir(idAmigo);
 

@@ -70,7 +70,7 @@ public class TelaCaixa
         Console.WriteLine("Editando Amigo...");
         Console.WriteLine("---------------------------------");
 
-        //VisualizarTodos(false);
+        Visualizar(false);
 
         int idCaixa;
         bool idValido;
@@ -81,6 +81,12 @@ public class TelaCaixa
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
+
+        if (repositorioCaixa.SelecionarPorId(idCaixa) == null)
+        {
+            Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
+            return;
+        }
 
         Caixa caixaEditada = ObterDadosCaixa();
 
@@ -120,6 +126,8 @@ public class TelaCaixa
         Console.WriteLine("Excluindo Caixa...");
         Console.WriteLine("---------------------------------");
 
+        Visualizar(false);
+
         int idCaixa;
         bool idValido;
         do
@@ -129,6 +137,12 @@ public class TelaCaixa
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
+
+        if (repositorioCaixa.SelecionarPorId(idCaixa) == null)
+        {
+            Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
+            return;
+        }
 
         bool conseguiuExcluir = repositorioCaixa.Excluir(idCaixa);
 
@@ -140,37 +154,40 @@ public class TelaCaixa
 
         Notificador.ExibirMensagem("Caixa excluída com sucesso!", ConsoleColor.Green);
     }
-    /*
-    public void VisualizarTodos(bool exibirTitulo)
+    
+    public void Visualizar(bool exibirTitulo)
     {
         if (exibirTitulo)
         {
             ExibirCabecalho();
 
-            Console.WriteLine("Visualizando Amigos...");
+            Console.WriteLine("Visualizando Caixas...");
             Console.WriteLine("---------------------------------");
         }
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            "Id", "Nome", "Responsável", "Telefone", "Empréstimo"
+            "{0, -10} | {1, -15} | {2, -10} | {3, -15}",
+            "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
         );
 
-        Amigo[] amigos = repositorioAmigo.SelecionarTodos();
+        Caixa[] caixas = repositorioCaixa.SelecionarTodos();
 
-        foreach (Amigo a in amigos)
+        foreach (Caixa c in caixas)
         {
-            if (a == null) continue;
+            if (c == null) continue;
+
+            Console.ForegroundColor = CorParaConsoleColor(c.cor);
 
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            a.id, a.nome, a.responsavel, a.telefone, "Empréstimo"
+            "{0, -10} | {1, -15} | {2, -10} | {3, -15}",
+            c.id, c.etiqueta, CorParaString(c.cor), c.diasEmprestimo
             );
+            Console.ResetColor();
         }
 
         if (exibirTitulo) Console.ReadLine();
     }
-    */
+    
     public Caixa ObterDadosCaixa()
     {
         Console.Write("Digite a etiqueta da Caixa: ");
@@ -237,5 +254,31 @@ public class TelaCaixa
         string opcao = Console.ReadLine()!;
 
         return opcao;
+    }
+
+    public ConsoleColor CorParaConsoleColor(Color cor)
+    {
+        ConsoleColor consoleCor;
+
+        if (cor == Color.Red) consoleCor = ConsoleColor.Red;
+        else if (cor == Color.Green) consoleCor = ConsoleColor.Green;
+        else if (cor == Color.Blue) consoleCor = ConsoleColor.Blue;
+        else if (cor == Color.Yellow) consoleCor = ConsoleColor.Yellow;
+        else consoleCor = ConsoleColor.White;
+
+        return consoleCor;
+    }
+
+    public string CorParaString(Color cor)
+    {
+        string corString;
+
+        if (cor == Color.Red) corString = "Vermelho";
+        else if (cor == Color.Green) corString = "Verde";
+        else if (cor == Color.Blue) corString = "Azul";
+        else if (cor == Color.Yellow) corString = "Amarelo";
+        else corString = "Branco";
+
+        return corString;
     }
 }

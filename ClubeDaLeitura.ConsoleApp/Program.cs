@@ -57,6 +57,8 @@ internal class Program
                             case "2": telaCaixa.Editar(); break;
                             
                             case "3": telaCaixa.Excluir(); break;
+                            
+                            case "4": telaCaixa.Visualizar(true); break;
 
                             case "S": deveRodar = false; break;
 

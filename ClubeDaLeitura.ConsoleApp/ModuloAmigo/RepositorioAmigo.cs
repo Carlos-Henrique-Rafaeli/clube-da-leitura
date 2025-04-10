@@ -54,9 +54,15 @@ public class RepositorioAmigo
         return amigos;
     }
 
-    public void SelecionarPorId()
+    public Amigo SelecionarPorId(int idAmigo)
     {
+        foreach (Amigo a in amigos)
+        {
+            if (a == null) continue;
 
+            if (a.id == idAmigo) return a;
+        }
+        return null;
     }
 
     public bool VerificarNomeTelefone(string nome, string telefone, int id = -1)

@@ -32,9 +32,7 @@ public class RepositorioCaixa
                 return true;
             }
         }
-        return true;
-
-
+        return false;
     }
 
     public bool Excluir(int idCaixa)
@@ -53,14 +51,20 @@ public class RepositorioCaixa
         return false;
     }
 
-    public void SelecionarTodos()
+    public Caixa[] SelecionarTodos()
     {
-
+        return caixas;
     }
 
-    public void SelecionarPorId()
+    public Caixa SelecionarPorId(int idCaixa)
     {
+        foreach (Caixa c in caixas)
+        {
+            if (c == null) continue;
 
+            if (c.id == idCaixa) return c;
+        }
+        return null;
     }
 
     public bool VerificarEtiqueta(string etiqueta, int id = -1)
