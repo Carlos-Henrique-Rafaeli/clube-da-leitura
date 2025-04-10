@@ -14,9 +14,24 @@ public class RepositorioAmigo
         amigos[contadorAmigos++] = novoAmigo;
     }
 
-    public void Editar()
+    public bool Editar(int idAmigo, Amigo amigoEditado)
     {
+        if (amigoEditado == null) return false;
 
+        foreach (Amigo a in amigos)
+        {
+            if (a == null) continue;
+
+            if (a.id == idAmigo)
+            {
+                a.nome = amigoEditado.nome;
+                a.responsavel = amigoEditado.responsavel;
+                a.telefone = amigoEditado.telefone;
+
+                return true;
+            }
+        }
+        return true;
     }
 
     public void Excluir()
@@ -34,11 +49,13 @@ public class RepositorioAmigo
 
     }
 
-    public bool VerificarNomeTelefone(string nome, string telefone)
+    public bool VerificarNomeTelefone(string nome, string telefone, int id = -1)
     {
         foreach (Amigo a in amigos)
         {
             if (a == null) continue;
+
+            if (a.id == id) continue;
 
             if (a.nome == nome && a.telefone == telefone) return true;
         }

@@ -30,6 +30,12 @@ internal class Program
                         {
                             case "1": telaAmigo.Inserir(); break;
                             
+                            case "2": telaAmigo.Editar(); break;
+                            
+                            case "3": telaAmigo.Excluir(); break;
+
+                            case "4": telaAmigo.VisualizarTodos(); break;
+                            
                             case "S": deveRodar = false; break;
 
                             default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;

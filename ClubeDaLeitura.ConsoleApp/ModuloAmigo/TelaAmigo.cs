@@ -64,6 +64,51 @@ public class TelaAmigo
 
     public void Editar()
     {
+        ExibirCabecalho();
+
+        Console.WriteLine("Editando Amigo...");
+        Console.WriteLine("---------------------------------");
+
+        int idAmigo;
+        bool idValido;
+        do
+        {
+            Console.Write("Selecione o ID do amigo que deseja editar: ");
+            idValido = int.TryParse(Console.ReadLine(), out idAmigo);
+
+            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
+        } while (!idValido);
+
+        Amigo amigoEditado = ObterDadosAmigo();
+
+        string erros = amigoEditado.Validar();
+
+        if (erros.Length > 0)
+        {
+            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
+
+            Editar();
+
+            return;
+        }
+
+        bool verificacao = repositorioAmigo.VerificarNomeTelefone(amigoEditado.nome, amigoEditado.telefone, idAmigo);
+
+        if (verificacao)
+        {
+            Notificador.ExibirMensagem("Ja existe um Amigo com o mesmo nome e telefone!", ConsoleColor.Red);
+            return;
+        }
+
+        bool conseguiuEditar = repositorioAmigo.Editar(idAmigo, amigoEditado);
+
+        if (!conseguiuEditar)
+        {
+            Notificador.ExibirMensagem("Erro ao editar Amigo!", ConsoleColor.Red);
+            return;
+        }
+        
+        Notificador.ExibirMensagem("Amigo editado com sucesso!", ConsoleColor.Green);
 
     }
 
