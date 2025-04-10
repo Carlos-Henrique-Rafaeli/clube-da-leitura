@@ -4,10 +4,10 @@ namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
 public class Caixa
 {
-    int id;
-    string etiqueta;
-    Color cor;
-    int diasEmprestimo;
+    public int id;
+    public string etiqueta;
+    public Color cor;
+    public int diasEmprestimo;
 
     public Caixa(string etiqueta, Color cor, int diasEmprestimo)
     {

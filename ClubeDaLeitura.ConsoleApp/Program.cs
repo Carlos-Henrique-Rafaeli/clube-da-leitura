@@ -53,8 +53,8 @@ internal class Program
                         switch (opcaoSelecionada)
                         {
                             case "1": telaCaixa.Inserir(); break;
-
-                          
+                            
+                            case "2": telaCaixa.Editar(); break;
 
                             case "S": deveRodar = false; break;
 

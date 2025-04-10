@@ -49,12 +49,20 @@ public class TelaCaixa
             return;
         }
 
+        bool verificacao = repositorioCaixa.VerificarEtiqueta(novaCaixa.etiqueta);
+
+        if (verificacao)
+        {
+            Notificador.ExibirMensagem("Já existe uma caixa com a mesma etiqueta!", ConsoleColor.Red);
+            return;
+        }
+
         repositorioCaixa.Inserir(novaCaixa);
         Notificador.ExibirMensagem("Caixa adicionada com sucesso!", ConsoleColor.Green);
 
     }
 
-    /*
+    
     public void Editar()
     {
         ExibirCabecalho();
@@ -62,21 +70,21 @@ public class TelaCaixa
         Console.WriteLine("Editando Amigo...");
         Console.WriteLine("---------------------------------");
 
-        VisualizarTodos(false);
+        //VisualizarTodos(false);
 
-        int idAmigo;
+        int idCaixa;
         bool idValido;
         do
         {
-            Console.Write("Selecione o ID do amigo que deseja editar: ");
-            idValido = int.TryParse(Console.ReadLine(), out idAmigo);
+            Console.Write("Selecione o ID da caixa que deseja editar: ");
+            idValido = int.TryParse(Console.ReadLine(), out idCaixa);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        Amigo amigoEditado = ObterDadosCaixa();
+        Caixa caixaEditada = ObterDadosCaixa();
 
-        string erros = amigoEditado.Validar();
+        string erros = caixaEditada.Validar();
 
         if (erros.Length > 0)
         {
@@ -85,26 +93,26 @@ public class TelaCaixa
             return;
         }
 
-        bool verificacao = repositorioAmigo.VerificarNomeTelefone(amigoEditado.nome, amigoEditado.telefone, idAmigo);
+        bool verificacao = repositorioCaixa.VerificarEtiqueta(caixaEditada.etiqueta, idCaixa);
 
         if (verificacao)
         {
-            Notificador.ExibirMensagem("Ja existe um Amigo com o mesmo nome e telefone!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Já existe uma caixa com a mesma etiqueta!", ConsoleColor.Red);
             return;
         }
 
-        bool conseguiuEditar = repositorioAmigo.Editar(idAmigo, amigoEditado);
+        bool conseguiuEditar = repositorioCaixa.Editar(idCaixa, caixaEditada);
 
         if (!conseguiuEditar)
         {
-            Notificador.ExibirMensagem("Erro ao editar Amigo!", ConsoleColor.Red);
+            Notificador.ExibirMensagem("Erro ao editar a Caixa!", ConsoleColor.Red);
             return;
         }
 
-        Notificador.ExibirMensagem("Amigo editado com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("Caixa editada com sucesso!", ConsoleColor.Green);
 
     }
-
+    /*
     public void Excluir()
     {
         ExibirCabecalho();

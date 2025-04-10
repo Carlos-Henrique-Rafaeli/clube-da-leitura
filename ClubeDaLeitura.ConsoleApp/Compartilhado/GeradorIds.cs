@@ -14,4 +14,9 @@ public static class GeradorIds
         return idAmigo;
     }
 
+    public static int GerarIdCaixa()
+    {
+        idCaixa++;
+        return idCaixa;
+    }
 }
