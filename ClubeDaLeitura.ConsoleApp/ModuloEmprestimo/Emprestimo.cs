@@ -9,6 +9,7 @@ public class Emprestimo
     public Amigo amigo;
     public Revista revista;
     public DateTime data;
+    public DateTime dataDevolucao;
     public StatusEmprestimo status;
 
     public Emprestimo(Amigo amigo, Revista revista, DateTime data)
@@ -16,7 +17,8 @@ public class Emprestimo
         this.amigo = amigo;
         this.revista = revista;
         this.data = data;
-        this.status = StatusEmprestimo.Aberto;
+        dataDevolucao = ObterDataDevolucao();
+        status = StatusEmprestimo.Aberto;
     }
 
     public string Validar()
@@ -32,14 +34,24 @@ public class Emprestimo
         return erros;
     }
 
-    public string ObterDataDevolucao()
+    public DateTime ObterDataDevolucao()
     {
         DateTime dataDevolucao = data.AddDays(revista.caixa.diasEmprestimo);
-        return dataDevolucao.ToShortDateString();
+        this.dataDevolucao = dataDevolucao;
+        
+        return dataDevolucao;
+    }
+
+    public void VerificarAtraso()
+    {
+        if (dataDevolucao < DateTime.Now) status = StatusEmprestimo.Atrasado;
     }
 
     public void RegistrarDevolucao()
     {
+        status = StatusEmprestimo.Fechado;
+        amigo.temEmprestimo = false;
 
+        revista.Devolver();
     }
 }

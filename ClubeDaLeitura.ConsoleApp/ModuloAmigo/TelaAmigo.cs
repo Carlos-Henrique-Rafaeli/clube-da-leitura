@@ -180,7 +180,7 @@ public class TelaAmigo
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            a.id, a.nome, a.responsavel, a.telefone, "Empréstimo"
+            a.id, a.nome, a.responsavel, a.telefone, a.ObterEmprestimos()
             );
         }
 

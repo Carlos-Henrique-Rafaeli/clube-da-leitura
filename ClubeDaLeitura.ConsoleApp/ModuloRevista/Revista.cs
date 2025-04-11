@@ -38,16 +38,16 @@ public class Revista
 
     public void Emprestar()
     {
-
+        status = StatusRevista.Emprestada;
     }
 
     public void Devolver()
     {
-
+        status = StatusRevista.Disponível;
     }
 
     public void Reservar()
     {
-
+        status = StatusRevista.Reservada;
     }
 }

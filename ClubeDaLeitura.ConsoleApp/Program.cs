@@ -87,6 +87,8 @@ internal class Program
 
                             case "4": telaRevista.VisualizarTodos(true); break;
 
+                            case "5": telaRevista.Reservar(); break;
+
                             case "S": deveRodar = false; break;
 
                             default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
@@ -105,9 +107,11 @@ internal class Program
                             
                             case "2": telaEmprestimo.Editar(); break;
 
-                            //case "3": telaEmprestimo.Excluir(); break;
+                            case "3": telaEmprestimo.Excluir(); break;
                             
                             case "4": telaEmprestimo.VisualizarTodos(true); break;
+                            
+                            case "5": telaEmprestimo.RegistrarDevolucao(); break;
                                 
                             case "S": deveRodar = false; break;
 

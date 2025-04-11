@@ -25,7 +25,7 @@ public class TelaEmprestimo
         Console.WriteLine("2 - Editar Empréstimo");
         Console.WriteLine("3 - Excluir Empréstimo");
         Console.WriteLine("4 - Visualizar Empréstimos");
-        Console.WriteLine("5 - Quitar Empréstimo");
+        Console.WriteLine("5 - Devolução Empréstimo");
         Console.WriteLine("S - Voltar ao Menu");
         Console.WriteLine();
 
@@ -144,7 +144,7 @@ public class TelaEmprestimo
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioRevista.SelecionarPorId(idEmprestimo) == null)
+        if (repositorioEmprestimo.SelecionarPorId(idEmprestimo) == null)
         {
             Notificador.ExibirMensagem($"Não existe Empréstimo com o id {idEmprestimo}!", ConsoleColor.Red);
             return;
@@ -161,6 +161,45 @@ public class TelaEmprestimo
         Notificador.ExibirMensagem("Empréstimo excluída com sucesso!", ConsoleColor.Green);
     }
 
+
+    public void RegistrarDevolucao()
+    {
+        ExibirCabecalho();
+
+        Console.WriteLine("Devolução Empréstimo...");
+        Console.WriteLine("---------------------------------");
+
+        VisualizarTodos(false);
+
+        int idEmprestimo;
+        bool idValido;
+        do
+        {
+            Console.Write("Selecione o ID da Empréstimo que deseja fazer a devolução: ");
+            idValido = int.TryParse(Console.ReadLine(), out idEmprestimo);
+
+            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
+        } while (!idValido);
+
+        Emprestimo emprestimo = repositorioEmprestimo.SelecionarPorId(idEmprestimo);
+
+        if (emprestimo == null)
+        {
+            Notificador.ExibirMensagem($"Não existe Empréstimo com o id {idEmprestimo}!", ConsoleColor.Red);
+            return;
+        }
+
+        if (emprestimo.status == StatusEmprestimo.Fechado)
+        {
+            Notificador.ExibirMensagem("Devolução de Empréstimo teve falha!", ConsoleColor.Red);
+            return;
+        }
+
+        emprestimo.RegistrarDevolucao();
+        Notificador.ExibirMensagem("Devolução de Empréstimo concluída com sucesso!", ConsoleColor.Green);
+    }
+
+
     public void VisualizarTodos(bool exibirTitulo)
     {
         if (exibirTitulo)
@@ -172,7 +211,7 @@ public class TelaEmprestimo
         }
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
+            "{0, -10} | {1, -15} | {2, -15} | {3, -17} | {4, -17} | {5, -15}",
             "Id", "Amigo", "Revista", "Data de Abertura", "Data de Devolução", "Status"
         );
 
@@ -182,10 +221,16 @@ public class TelaEmprestimo
         {
             if (e == null) continue;
 
+            e.VerificarAtraso();
+
+            if (e.status == StatusEmprestimo.Atrasado) Console.ForegroundColor = ConsoleColor.Yellow;
+            
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
-            e.id, e.amigo.nome, e.revista.titulo, e.data.ToShortDateString(), e.ObterDataDevolucao(), e.status
+                "{0, -10} | {1, -15} | {2, -15} | {3, -17} | {4, -17} | {5, -15}",
+                e.id, e.amigo.nome, e.revista.titulo, e.data.ToShortDateString(), e.dataDevolucao.ToShortDateString(), e.status
             );
+            
+            Console.ResetColor();
         }
 
         if (exibirTitulo) Console.ReadLine();
@@ -211,7 +256,7 @@ public class TelaEmprestimo
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            a.id, a.nome, a.responsavel, a.telefone, "Empréstimo"
+            a.id, a.nome, a.responsavel, a.telefone, a.ObterEmprestimos()
             );
         }
     }
@@ -223,7 +268,7 @@ public class TelaEmprestimo
         Console.WriteLine("---------------------------------");
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
+            "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
@@ -234,8 +279,8 @@ public class TelaEmprestimo
             if (r == null) continue;
 
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao, r.status, r.caixa.etiqueta
+            "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
+            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.etiqueta
             );
         }
     }
@@ -259,6 +304,12 @@ public class TelaEmprestimo
         if (amigo == null)
         {
             Notificador.ExibirMensagem($"Não existe Amigo com o id {idAmigo}!", ConsoleColor.Red);
+            return null;
+        }
+
+        if (amigo.temEmprestimo)
+        {
+            Notificador.ExibirMensagem("O Amigo já tem Empréstimo!", ConsoleColor.Red);
             return null;
         }
 

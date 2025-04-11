@@ -8,7 +8,8 @@ public class Amigo
     public string nome;
     public string responsavel;
     public string telefone;
-    
+    public bool temEmprestimo = false;
+
     private int[] telefoneValido = [12, 13];
 
     public Amigo(string nome, string responsavel, string telefone)
@@ -37,8 +38,11 @@ public class Amigo
         return erros;
     }
 
-    public void ObterImprestimos()
+    public string ObterEmprestimos()
     {
-
+        string opcao;
+        if (temEmprestimo) opcao = "Sim";
+        else opcao = "Não";
+        return opcao;
     }
 }

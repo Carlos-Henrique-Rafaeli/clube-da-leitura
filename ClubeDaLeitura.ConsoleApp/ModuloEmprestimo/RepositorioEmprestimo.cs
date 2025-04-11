@@ -1,5 +1,6 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
@@ -11,6 +12,8 @@ public class RepositorioEmprestimo
     public void Inserir(Emprestimo novoEmprestimo)
     {
         novoEmprestimo.id = GeradorIds.GerarIdEmprestimo();
+        novoEmprestimo.revista.Emprestar();
+        novoEmprestimo.amigo.temEmprestimo = true;
 
         emprestimos[contadorEmprestimos++] = novoEmprestimo;
     }
@@ -74,7 +77,7 @@ public class RepositorioEmprestimo
 
             if (e.id == idEmprestimo) continue;
 
-            if (e.amigo != null) return true;
+            if (e.amigo == emprestimo.amigo) return true;
         }
 
         return false;

@@ -23,6 +23,7 @@ public class TelaRevista
         Console.WriteLine("2 - Editar Revista");
         Console.WriteLine("3 - Excluir Revista");
         Console.WriteLine("4 - Visualizar Revistas");
+        Console.WriteLine("5 - Reservar Revista");
         Console.WriteLine("S - Voltar ao Menu");
         Console.WriteLine();
 
@@ -39,7 +40,7 @@ public class TelaRevista
         Console.WriteLine("Cadastrando Revista...");
         Console.WriteLine("---------------------------------");
 
-        Revista novaRevista = ObterDadosCaixa(false);
+        Revista novaRevista = ObterDadosCaixa();
 
         if (novaRevista == null) return;
 
@@ -90,7 +91,7 @@ public class TelaRevista
             return;
         }
 
-        Revista revistaEditada = ObterDadosCaixa(true);
+        Revista revistaEditada = ObterDadosCaixa();
 
         if (revistaEditada == null) return;
 
@@ -159,6 +160,46 @@ public class TelaRevista
         Notificador.ExibirMensagem("Revista excluída com sucesso!", ConsoleColor.Green);
     }
     
+
+    public void Reservar()
+    {
+        ExibirCabecalho();
+
+        Console.WriteLine("Reservando Revista...");
+        Console.WriteLine("---------------------------------");
+
+        VisualizarTodos(false);
+
+        int idRevista;
+        bool idValido;
+        do
+        {
+            Console.Write("Selecione o ID da revista que deseja reservar: ");
+            idValido = int.TryParse(Console.ReadLine(), out idRevista);
+
+            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
+        } while (!idValido);
+
+        Revista revista = repositorioRevista.SelecionarPorId(idRevista);
+
+        if (revista == null)
+        {
+            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
+            return;
+        }
+
+        if (revista.status == StatusRevista.Reservada)
+        {
+            revista.Devolver();
+            Notificador.ExibirMensagem("Revista devolvida com sucesso!", ConsoleColor.Green);
+            return;
+        }
+
+        revista.Reservar();
+        Notificador.ExibirMensagem("Revista reservada com sucesso!", ConsoleColor.Green);
+    }
+
+
     public void VisualizarTodos(bool exibirTitulo)
     {
         if (exibirTitulo)
@@ -170,7 +211,7 @@ public class TelaRevista
         }
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
+            "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
@@ -181,8 +222,8 @@ public class TelaRevista
             if (r == null) continue;
 
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -10} | {3, -15} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao, r.status, r.caixa.etiqueta
+            "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
+            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.etiqueta
             );
         }
 
@@ -216,7 +257,7 @@ public class TelaRevista
         }
     }
 
-    public Revista ObterDadosCaixa(bool editarStatus)
+    public Revista ObterDadosCaixa()
     {
         Console.Write("Digite o título da Revista: ");
         string titulo = Console.ReadLine()!;
@@ -263,19 +304,10 @@ public class TelaRevista
             Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
             return null;
         }
+     
+        Revista revista = new Revista(titulo, numeroEdicao, dataLancamento, caixa);
 
-        if (editarStatus)
-        {
-            StatusRevista novoStatus = ExibirStatus();
-            Revista revista = new Revista(titulo, numeroEdicao, dataLancamento, caixa, novoStatus);
-            return revista;
-        }
-        else
-        {
-            Revista revista = new Revista(titulo, numeroEdicao, dataLancamento, caixa);
-
-            return revista;
-        }
+        return revista;
     }
 
     public void ExibirCabecalho()
