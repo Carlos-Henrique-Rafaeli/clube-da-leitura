@@ -12,6 +12,7 @@ public class RepositorioRevista
     public void Inserir(Revista novaRevista)
     {
         novaRevista.id = GeradorIds.GerarIdRevista();
+        novaRevista.caixa.AdicionarRevista();
 
         revistas[contadorRevistas++] = novaRevista;
     }
@@ -44,6 +45,7 @@ public class RepositorioRevista
 
             if (revistas[i].id == idRevista && revistas[i].status == StatusRevista.Disponível)
             {
+                revistas[i].caixa.RemoverRevista();
                 revistas[i] = null;
 
                 return true;

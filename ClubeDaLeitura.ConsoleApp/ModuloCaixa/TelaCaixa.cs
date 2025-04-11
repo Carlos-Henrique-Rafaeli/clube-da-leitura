@@ -138,11 +138,21 @@ public class TelaCaixa
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioCaixa.SelecionarPorId(idCaixa) == null)
+        Caixa caixa = repositorioCaixa.SelecionarPorId(idCaixa);
+
+        if (caixa == null)
         {
             Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
             return;
         }
+
+
+        if (caixa.revistas > 0)
+        {
+            Notificador.ExibirMensagem($"Não foi possível excluir pois existem {caixa.revistas} revista(s)!", ConsoleColor.Red);
+            return;
+        }
+
 
         bool conseguiuExcluir = repositorioCaixa.Excluir(idCaixa);
 

@@ -9,11 +9,14 @@ public class Caixa
     public Color cor;
     public int diasEmprestimo;
 
+    public int revistas;
+
     public Caixa(string etiqueta, Color cor, int diasEmprestimo)
     {
         this.etiqueta = etiqueta;
         this.cor = cor;
         this.diasEmprestimo = diasEmprestimo;
+        revistas = 0;
     }
 
     public string Validar()
@@ -33,11 +36,11 @@ public class Caixa
 
     public void AdicionarRevista()
     {
-
+        revistas++;
     }
 
     public void RemoverRevista()
     {
-
+        revistas--;
     }
 }
