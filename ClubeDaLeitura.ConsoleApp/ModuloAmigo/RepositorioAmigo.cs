@@ -40,7 +40,7 @@ public class RepositorioAmigo
         {
             if (amigos[i] == null) continue;
 
-            if (amigos[i].id == idAmigo)
+            if (amigos[i].id == idAmigo && !amigos[i].temEmprestimo)
             {
                 amigos[i] = null;
                 return true;

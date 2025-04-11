@@ -188,7 +188,13 @@ public class TelaRevista
             return;
         }
 
-        if (revista.status == StatusRevista.Reservada)
+        if (revista.status == StatusRevista.Emprestada)
+        {
+            Notificador.ExibirMensagem("Revista não disponível!", ConsoleColor.Green);
+            return;
+        }
+
+        else if (revista.status == StatusRevista.Reservada)
         {
             revista.Devolver();
             Notificador.ExibirMensagem("Revista devolvida com sucesso!", ConsoleColor.Green);
