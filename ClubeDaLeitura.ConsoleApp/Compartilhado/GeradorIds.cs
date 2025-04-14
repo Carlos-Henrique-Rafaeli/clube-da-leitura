@@ -6,6 +6,7 @@ public static class GeradorIds
     public static int idCaixa = 0;
     public static int idRevista = 0;
     public static int idEmprestimo = 0;
+    public static int idMulta = 0;
 
     public static int GerarIdAmigo()
     {
@@ -29,5 +30,11 @@ public static class GeradorIds
     {
         idEmprestimo++;
         return idEmprestimo;
+    }
+
+    public static int GerarIdMulta()
+    {
+        idMulta++;
+        return idMulta;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
@@ -29,7 +30,6 @@ public class Emprestimo
         
         if (revista == null) erros += "O campo 'Revista' está inválido\n";
         
-        else if (revista.status != StatusRevista.Disponível) erros += "O campo 'Revista' não está disponível\n";
 
         return erros;
     }
@@ -44,6 +44,8 @@ public class Emprestimo
 
     public void VerificarAtraso()
     {
+        if (status == StatusEmprestimo.Fechado) return;
+
         if (dataDevolucao < DateTime.Now) status = StatusEmprestimo.Atrasado;
     }
 

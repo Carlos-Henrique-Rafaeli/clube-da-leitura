@@ -31,6 +31,7 @@ public class RepositorioEmprestimo
                 e.amigo = emprestimoEditado.amigo;
                 e.revista = emprestimoEditado.revista;
                 e.data = emprestimoEditado.data;
+                e.ObterDataDevolucao();
 
                 return true;
             }
@@ -73,11 +74,11 @@ public class RepositorioEmprestimo
     {
         foreach (Emprestimo e in emprestimos)
         {
-            if (e == null) continue;
+            if (e == null || e.status == StatusEmprestimo.Fechado) continue;
 
             if (e.id == idEmprestimo) continue;
 
-            if (e.amigo == emprestimo.amigo) return true;
+            if (emprestimo.amigo.temEmprestimo) return true;
         }
 
         return false;

@@ -2,6 +2,7 @@
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
+using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp;
@@ -14,11 +15,13 @@ internal class Program
         RepositorioCaixa repositorioCaixa = new RepositorioCaixa();
         RepositorioRevista repositorioRevista = new RepositorioRevista();
         RepositorioEmprestimo repositorioEmprestimo = new RepositorioEmprestimo();
+        RepositorioMulta repositorioMulta = new RepositorioMulta();
 
         TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
         TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
         TelaRevista telaRevista = new TelaRevista(repositorioRevista, repositorioCaixa);
-        TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista);
+        TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista, repositorioMulta);
+        TelaMulta telaMulta = new TelaMulta(repositorioMulta);
 
         while (true)
         {
@@ -113,6 +116,24 @@ internal class Program
                             
                             case "5": telaEmprestimo.RegistrarDevolucao(); break;
                                 
+                            case "S": deveRodar = false; break;
+
+                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
+                        }
+                    }
+                    break;
+
+                case "5":
+                    while (deveRodar)
+                    {
+                        opcaoSelecionada = telaMulta.ApresentarMenu();
+
+                        switch (opcaoSelecionada)
+                        {
+                            case "1": telaMulta.Visualizar(true); break;
+
+                            case "2": telaMulta.QuitarMulta(); break;
+
                             case "S": deveRodar = false; break;
 
                             default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;

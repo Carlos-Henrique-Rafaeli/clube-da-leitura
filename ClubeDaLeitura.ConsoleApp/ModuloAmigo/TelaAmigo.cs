@@ -168,8 +168,8 @@ public class TelaAmigo
         }
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            "Id", "Nome", "Responsável", "Telefone", "Empréstimo"
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
+            "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
         Amigo[] amigos = repositorioAmigo.SelecionarTodos();
@@ -178,10 +178,13 @@ public class TelaAmigo
         {
             if (a == null) continue;
 
+            if (a.temMulta) Console.ForegroundColor = ConsoleColor.Red;
+
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            a.id, a.nome, a.responsavel, a.telefone, a.ObterEmprestimos()
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
+            a.id, a.nome, a.responsavel, a.telefone, a.ObterEmprestimos(), a.ObterMultas()
             );
+            Console.ResetColor();
         }
 
         if (exibirTitulo) Console.ReadLine();

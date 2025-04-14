@@ -9,6 +9,7 @@ public class Amigo
     public string responsavel;
     public string telefone;
     public bool temEmprestimo = false;
+    public bool temMulta = false;
 
     private int[] telefoneValido = [12, 13];
 
@@ -42,6 +43,14 @@ public class Amigo
     {
         string opcao;
         if (temEmprestimo) opcao = "Sim";
+        else opcao = "Não";
+        return opcao;
+    }
+
+    public string ObterMultas()
+    {
+        string opcao;
+        if (temMulta) opcao = "Sim";
         else opcao = "Não";
         return opcao;
     }

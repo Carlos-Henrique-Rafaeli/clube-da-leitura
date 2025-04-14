@@ -1,6 +1,7 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
@@ -10,12 +11,14 @@ public class TelaEmprestimo
     RepositorioEmprestimo repositorioEmprestimo;
     RepositorioAmigo repositorioAmigo;
     RepositorioRevista repositorioRevista;
+    RepositorioMulta repositorioMulta;
 
-    public TelaEmprestimo(RepositorioEmprestimo repositorioEmprestimo, RepositorioAmigo repositorioAmigo, RepositorioRevista repositorioRevista)
+    public TelaEmprestimo(RepositorioEmprestimo repositorioEmprestimo, RepositorioAmigo repositorioAmigo, RepositorioRevista repositorioRevista, RepositorioMulta repositorioMulta)
     {
         this.repositorioEmprestimo = repositorioEmprestimo;
         this.repositorioAmigo = repositorioAmigo;
         this.repositorioRevista = repositorioRevista;
+        this.repositorioMulta = repositorioMulta;
     }
     public string ApresentarMenu()
     {
@@ -80,17 +83,26 @@ public class TelaEmprestimo
         bool idValido;
         do
         {
-            Console.Write("Selecione o ID do Emprestimo que deseja editar: ");
+            Console.Write("Selecione o ID do Empréstimo que deseja editar: ");
             idValido = int.TryParse(Console.ReadLine(), out idEmprestimo);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        if (repositorioEmprestimo.SelecionarPorId(idEmprestimo) == null)
+        Emprestimo emprestimo = repositorioEmprestimo.SelecionarPorId(idEmprestimo);
+
+        if (emprestimo == null)
         {
-            Notificador.ExibirMensagem($"Não existe Revista com o id {idEmprestimo}!", ConsoleColor.Red);
+            Notificador.ExibirMensagem($"Não existe Empréstimo com o id {idEmprestimo}!", ConsoleColor.Red);
             return;
         }
+
+        if (emprestimo.status == StatusEmprestimo.Fechado)
+        {
+            Notificador.ExibirMensagem("Edição de Empréstimo teve falha!", ConsoleColor.Red);
+            return;
+        }
+
 
         Emprestimo emprestimoEditado = ObterDadosEmprestimo(true);
 
@@ -101,7 +113,7 @@ public class TelaEmprestimo
         if (erros.Length > 0)
         {
             Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Inserir();
+            Editar();
             return;
         }
 
@@ -121,7 +133,7 @@ public class TelaEmprestimo
             return;
         }
 
-        Notificador.ExibirMensagem("Empréstimo editada com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("Empréstimo editado com sucesso!", ConsoleColor.Green);
 
     }
     
@@ -195,7 +207,14 @@ public class TelaEmprestimo
             return;
         }
 
+        if (emprestimo.status == StatusEmprestimo.Atrasado)
+        {
+            Multa novaMulta = new Multa(emprestimo);
+            repositorioMulta.Inserir(novaMulta);
+        }
+
         emprestimo.RegistrarDevolucao();
+
         Notificador.ExibirMensagem("Devolução de Empréstimo concluída com sucesso!", ConsoleColor.Green);
     }
 
@@ -244,8 +263,8 @@ public class TelaEmprestimo
         Console.WriteLine("---------------------------------");
 
         Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            "Id", "Nome", "Responsável", "Telefone", "Empréstimo"
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
+            "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
         Amigo[] amigos = repositorioAmigo.SelecionarTodos();
@@ -254,10 +273,13 @@ public class TelaEmprestimo
         {
             if (a == null) continue;
 
+            if (a.temMulta) Console.ForegroundColor = ConsoleColor.Red;
+
             Console.WriteLine(
-            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15}",
-            a.id, a.nome, a.responsavel, a.telefone, a.ObterEmprestimos()
+            "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
+            a.id, a.nome, a.responsavel, a.telefone, a.ObterEmprestimos(), a.ObterMultas()
             );
+            Console.ResetColor();
         }
     }
     
@@ -307,9 +329,15 @@ public class TelaEmprestimo
             return null;
         }
 
-        if (amigo.temEmprestimo)
+        if (amigo.temEmprestimo && !editarData)
         {
             Notificador.ExibirMensagem("O Amigo já tem Empréstimo!", ConsoleColor.Red);
+            return null;
+        }
+
+        if (amigo.temMulta)
+        {
+            Notificador.ExibirMensagem("O Amigo contém multas pendentes!", ConsoleColor.Red);
             return null;
         }
 
