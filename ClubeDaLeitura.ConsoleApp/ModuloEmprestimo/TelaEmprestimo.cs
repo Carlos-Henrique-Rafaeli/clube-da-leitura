@@ -2,6 +2,7 @@
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
+using ClubeDaLeitura.ConsoleApp.ModuloReserva;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
@@ -12,13 +13,15 @@ public class TelaEmprestimo
     RepositorioAmigo repositorioAmigo;
     RepositorioRevista repositorioRevista;
     RepositorioMulta repositorioMulta;
+    RepositorioReserva repositorioReserva;
 
-    public TelaEmprestimo(RepositorioEmprestimo repositorioEmprestimo, RepositorioAmigo repositorioAmigo, RepositorioRevista repositorioRevista, RepositorioMulta repositorioMulta)
+    public TelaEmprestimo(RepositorioEmprestimo repositorioEmprestimo, RepositorioAmigo repositorioAmigo, RepositorioRevista repositorioRevista, RepositorioMulta repositorioMulta, RepositorioReserva repositorioReserva)
     {
         this.repositorioEmprestimo = repositorioEmprestimo;
         this.repositorioAmigo = repositorioAmigo;
         this.repositorioRevista = repositorioRevista;
         this.repositorioMulta = repositorioMulta;
+        this.repositorioReserva = repositorioReserva;
     }
     public string ApresentarMenu()
     {
@@ -213,6 +216,10 @@ public class TelaEmprestimo
             repositorioMulta.Inserir(novaMulta);
         }
 
+        Reserva reserva = repositorioReserva.SelecionarPorRevistaAmigo(emprestimo.revista, emprestimo.amigo);
+
+        if (reserva != null) reserva.Status = StatusReserva.Concluída;
+
         emprestimo.RegistrarDevolucao();
 
         Notificador.ExibirMensagem("Devolução de Empréstimo concluída com sucesso!", ConsoleColor.Green);
@@ -358,6 +365,24 @@ public class TelaEmprestimo
         {
             Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
             return null;
+        }
+
+
+        if (revista.status == StatusRevista.Emprestada)
+        {
+            Notificador.ExibirMensagem("A Revista não está disponível!", ConsoleColor.Red);
+            return null;
+        }
+
+        else if (revista.status == StatusRevista.Reservada)
+        {
+            bool verificacao = repositorioReserva.VerificarRevistaAmigo(revista, amigo);
+
+            if (!verificacao)
+            {
+                Notificador.ExibirMensagem("A Revista não está disponível!", ConsoleColor.Red);
+                return null;
+            }
         }
 
         if (editarData)

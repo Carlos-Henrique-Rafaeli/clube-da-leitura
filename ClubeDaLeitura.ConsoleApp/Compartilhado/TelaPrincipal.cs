@@ -14,7 +14,8 @@ public static class TelaPrincipal
         Console.WriteLine("2 - Controle de Caixas");
         Console.WriteLine("3 - Controle de Revistas");
         Console.WriteLine("4 - Controle de Empréstimos");
-        Console.WriteLine("5 - Controle de Multas");
+        Console.WriteLine("5 - Controle de Reservas");
+        Console.WriteLine("6 - Controle de Multas");
         Console.WriteLine("S - Sair do Programa");
         Console.WriteLine();
 

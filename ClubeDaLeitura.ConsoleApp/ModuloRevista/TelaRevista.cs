@@ -23,7 +23,6 @@ public class TelaRevista
         Console.WriteLine("2 - Editar Revista");
         Console.WriteLine("3 - Excluir Revista");
         Console.WriteLine("4 - Visualizar Revistas");
-        Console.WriteLine("5 - Reservar Revista");
         Console.WriteLine("S - Voltar ao Menu");
         Console.WriteLine();
 
@@ -159,52 +158,6 @@ public class TelaRevista
 
         Notificador.ExibirMensagem("Revista excluída com sucesso!", ConsoleColor.Green);
     }
-    
-
-    public void Reservar()
-    {
-        ExibirCabecalho();
-
-        Console.WriteLine("Reservando Revista...");
-        Console.WriteLine("---------------------------------");
-
-        VisualizarTodos(false);
-
-        int idRevista;
-        bool idValido;
-        do
-        {
-            Console.Write("Selecione o ID da revista que deseja reservar: ");
-            idValido = int.TryParse(Console.ReadLine(), out idRevista);
-
-            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
-
-        Revista revista = repositorioRevista.SelecionarPorId(idRevista);
-
-        if (revista == null)
-        {
-            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
-            return;
-        }
-
-        if (revista.status == StatusRevista.Emprestada)
-        {
-            Notificador.ExibirMensagem("Revista não disponível!", ConsoleColor.Green);
-            return;
-        }
-
-        else if (revista.status == StatusRevista.Reservada)
-        {
-            revista.Devolver();
-            Notificador.ExibirMensagem("Revista devolvida com sucesso!", ConsoleColor.Green);
-            return;
-        }
-
-        revista.Reservar();
-        Notificador.ExibirMensagem("Revista reservada com sucesso!", ConsoleColor.Green);
-    }
-
 
     public void VisualizarTodos(bool exibirTitulo)
     {

@@ -3,6 +3,7 @@ using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
+using ClubeDaLeitura.ConsoleApp.ModuloReserva;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp;
@@ -16,12 +17,14 @@ internal class Program
         RepositorioRevista repositorioRevista = new RepositorioRevista();
         RepositorioEmprestimo repositorioEmprestimo = new RepositorioEmprestimo();
         RepositorioMulta repositorioMulta = new RepositorioMulta();
+        RepositorioReserva repositorioReserva = new RepositorioReserva();
 
         TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
         TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
         TelaRevista telaRevista = new TelaRevista(repositorioRevista, repositorioCaixa);
-        TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista, repositorioMulta);
+        TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista, repositorioMulta, repositorioReserva);
         TelaMulta telaMulta = new TelaMulta(repositorioMulta);
+        TelaReserva telaReserva = new TelaReserva(repositorioReserva, repositorioRevista, repositorioAmigo);
 
         while (true)
         {
@@ -90,8 +93,6 @@ internal class Program
 
                             case "4": telaRevista.VisualizarTodos(true); break;
 
-                            case "5": telaRevista.Reservar(); break;
-
                             case "S": deveRodar = false; break;
 
                             default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
@@ -124,6 +125,26 @@ internal class Program
                     break;
 
                 case "5":
+                    while (deveRodar)
+                    {
+                        opcaoSelecionada = telaReserva.ApresentarMenu();
+
+                        switch (opcaoSelecionada)
+                        {
+                            case "1": telaReserva.CriarReserva(); break;
+
+                            case "2": telaReserva.CancelarReserva(); break;
+
+                            case "3": telaReserva.Visualizar(true); break;
+
+                            case "S": deveRodar = false; break;
+
+                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
+                        }
+                    }
+                    break;
+
+                case "6":
                     while (deveRodar)
                     {
                         opcaoSelecionada = telaMulta.ApresentarMenu();
