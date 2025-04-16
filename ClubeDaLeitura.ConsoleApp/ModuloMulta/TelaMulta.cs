@@ -52,7 +52,7 @@ public class TelaMulta
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -15} | {3, -15}",
-            m.id, m.emprestimo.Amigo.Nome, m.valorMulta.ToString("C2"), m.status
+            m.Id, m.Emprestimo.Amigo.Nome, m.ValorMulta.ToString("C2"), m.Status
             );
         }
 
@@ -87,15 +87,15 @@ public class TelaMulta
             return;
         }
 
-        if (multa.status == StatusMulta.Quitada)
+        if (multa.Status == StatusMulta.Quitada)
         {
             Notificador.ExibirMensagem($"A multa já foi quitada!", ConsoleColor.Green);
             return;
         }
 
 
-        multa.emprestimo.Amigo.TemMulta = false;
-        multa.status = StatusMulta.Quitada;
+        multa.Emprestimo.Amigo.TemMulta = false;
+        multa.Status = StatusMulta.Quitada;
 
         Notificador.ExibirMensagem("Multa quitada com sucesso!", ConsoleColor.Green);
     }

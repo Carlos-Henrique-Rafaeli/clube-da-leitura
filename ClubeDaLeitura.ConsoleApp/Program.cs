@@ -85,13 +85,13 @@ internal class Program
 
                         switch (opcaoSelecionada)
                         {
-                            case "1": telaRevista.Inserir(); break;
+                            case "1": telaRevista.CadastrarRegistro(); break;
                             
-                            case "2": telaRevista.Editar(); break;
+                            case "2": telaRevista.EditarRegistro(); break;
                             
-                            case "3": telaRevista.Excluir(); break;
+                            case "3": telaRevista.ExcluirRegistro(); break;
 
-                            case "4": telaRevista.VisualizarTodos(true); break;
+                            case "4": telaRevista.VisualizarRegistros(true); break;
 
                             case "S": deveRodar = false; break;
 

@@ -1,26 +1,28 @@
-﻿using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloMulta;
 
 public class Multa
 {
-    public int id;
-    public double valorMulta;
-    public StatusMulta status = StatusMulta.Pendente;
-    public Emprestimo emprestimo;
+    public int Id { get; set; }
+    public double ValorMulta { get; set; }
+    public StatusMulta Status { get; set; }
+    public Emprestimo Emprestimo { get; set; }
 
     public Multa(Emprestimo emprestimo)
     {
-        this.emprestimo = emprestimo;
+        this.Emprestimo = emprestimo;
         emprestimo.Amigo.TemMulta = true;
+        Status = StatusMulta.Pendente;
         ObterValorMulta();
     }
 
     public void ObterValorMulta()
     {
-        int diasAtraso = (DateTime.Now - emprestimo.DataDevolucao).Days;
+        int diasAtraso = (DateTime.Now - Emprestimo.DataDevolucao).Days;
 
-        valorMulta = diasAtraso * 2.0;
+        ValorMulta = diasAtraso * 2.0;
     }
 
 }

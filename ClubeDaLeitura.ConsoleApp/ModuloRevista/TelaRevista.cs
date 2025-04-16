@@ -1,166 +1,63 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 using ClubeDaLeitura.ConsoleApp.Util;
 using System.Drawing;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
-public class TelaRevista
+public class TelaRevista : TelaBase
 {
     RepositorioRevista repositorioRevista;
     RepositorioCaixa repositorioCaixa;
 
-    public TelaRevista(RepositorioRevista repositorioRevista, RepositorioCaixa repositorioCaixa)
+    public TelaRevista(RepositorioRevista repositorioRevista, 
+        RepositorioCaixa repositorioCaixa) 
+        : base("Revista", repositorioRevista)
     {
         this.repositorioRevista = repositorioRevista;
         this.repositorioCaixa = repositorioCaixa;
     }
 
-    public string ApresentarMenu()
+    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
     {
-        ExibirCabecalho();
+        Revista novaRevista = (Revista)registroEditado;
 
-        Console.WriteLine("1 - Inserir Nova Revista");
-        Console.WriteLine("2 - Editar Revista");
-        Console.WriteLine("3 - Excluir Revista");
-        Console.WriteLine("4 - Visualizar Revistas");
-        Console.WriteLine("S - Voltar ao Menu");
-        Console.WriteLine();
-
-        Console.Write("Digite uma opção válida: ");
-        string opcaoEscolhida = Console.ReadLine()!.ToUpper();
-        return opcaoEscolhida;
-    }
-
-
-    public void Inserir()
-    {
-        ExibirCabecalho();
-
-        Console.WriteLine("Cadastrando Revista...");
-        Console.WriteLine("---------------------------------");
-
-        Revista novaRevista = ObterDadosCaixa();
-
-        if (novaRevista == null) return;
-
-        string erros = novaRevista.Validar();
-
-        if (erros.Length > 0)
-        {
-            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Inserir();
-            return;
-        }
-
-        bool verificacao = repositorioRevista.VerificarTituloEdicao(novaRevista.titulo, novaRevista.numeroEdicao);
+        bool verificacao = repositorioRevista.VerificarTituloEdicao(novaRevista.Titulo, novaRevista.NumeroEdicao);
 
         if (verificacao)
         {
             Notificador.ExibirMensagem("Já existe uma revista com o mesmo título e número de edição!", ConsoleColor.Red);
-            return;
+            return false;
         }
-
-        repositorioRevista.Inserir(novaRevista);
-        Notificador.ExibirMensagem("Revista adicionada com sucesso!", ConsoleColor.Green);
+        return true;
     }
 
-    
-    public void Editar()
+    public override bool ValidarExlcuir(EntidadeBase registro, int idRegistro)
     {
-        ExibirCabecalho();
+        Revista novaRevista = (Revista)registro;
 
-        Console.WriteLine("Editando Revista...");
-        Console.WriteLine("---------------------------------");
-
-        VisualizarTodos(false);
-
-        int idRevista;
-        bool idValido;
-        do
-        {
-            Console.Write("Selecione o ID da revista que deseja editar: ");
-            idValido = int.TryParse(Console.ReadLine(), out idRevista);
-
-            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
-
-        if (repositorioRevista.SelecionarPorId(idRevista) == null)
-        {
-            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
-            return;
-        }
-
-        Revista revistaEditada = ObterDadosCaixa();
-
-        if (revistaEditada == null) return;
-
-        string erros = revistaEditada.Validar();
-
-        if (erros.Length > 0)
-        {
-            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Inserir();
-            return;
-        }
-
-        bool verificacao = repositorioRevista.VerificarTituloEdicao(revistaEditada.titulo, revistaEditada.numeroEdicao, idRevista);
+        bool verificacao = novaRevista.Status == StatusRevista.Disponível;
 
         if (verificacao)
         {
-            Notificador.ExibirMensagem("Já existe uma revista com o mesmo título e número de edição!", ConsoleColor.Red);
-            return;
+            Notificador.ExibirMensagem("A revista não está disponível!", ConsoleColor.Red);
+            return false;
         }
+        return true;
 
-        bool conseguiuEditar = repositorioRevista.Editar(idRevista, revistaEditada);
-
-        if (!conseguiuEditar)
-        {
-            Notificador.ExibirMensagem("Erro ao editar Revista!", ConsoleColor.Red);
-            return;
-        }
-
-        Notificador.ExibirMensagem("Revista editada com sucesso!", ConsoleColor.Green);
 
     }
-    
-    public void Excluir()
+
+    public override void ExcluirExtras(EntidadeBase registro)
     {
-        ExibirCabecalho();
+        Revista revista = (Revista)registro;
 
-        Console.WriteLine("Excluindo Revista...");
-        Console.WriteLine("---------------------------------");
-
-        VisualizarTodos(false);
-
-        int idRevista;
-        bool idValido;
-        do
-        {
-            Console.Write("Selecione o ID da revista que deseja excluir: ");
-            idValido = int.TryParse(Console.ReadLine(), out idRevista);
-
-            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
-
-        if (repositorioRevista.SelecionarPorId(idRevista) == null)
-        {
-            Notificador.ExibirMensagem($"Não existe Revista com o id {idRevista}!", ConsoleColor.Red);
-            return;
-        }
-
-        bool conseguiuExcluir = repositorioRevista.Excluir(idRevista);
-
-        if (!conseguiuExcluir)
-        {
-            Notificador.ExibirMensagem("Erro ao excluir Revista!", ConsoleColor.Red);
-            return;
-        }
-
-        Notificador.ExibirMensagem("Revista excluída com sucesso!", ConsoleColor.Green);
+        revista.Caixa.RemoverRevista();
     }
 
-    public void VisualizarTodos(bool exibirTitulo)
+    public override void VisualizarRegistros(bool exibirTitulo)
     {
         if (exibirTitulo)
         {
@@ -175,7 +72,11 @@ public class TelaRevista
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        Revista[] revistas = repositorioRevista.SelecionarTodos();
+        EntidadeBase[] registros = repositorioRevista.SelecionarRegistros();
+        Revista[] revistas = new Revista[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            revistas[i] = (Revista)registros[i];
 
         foreach (Revista r in revistas)
         {
@@ -183,7 +84,7 @@ public class TelaRevista
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.Etiqueta
+            r.Id, r.Titulo, r.NumeroEdicao, r.DataPublicacao.ToShortDateString(), r.Status, r.Caixa.Etiqueta
             );
         }
 
@@ -221,7 +122,7 @@ public class TelaRevista
         }
     }
 
-    public Revista ObterDadosCaixa()
+    public override EntidadeBase ObterDados(bool validacaoExtra)
     {
         Console.Write("Digite o título da Revista: ");
         string titulo = Console.ReadLine()!;
@@ -268,46 +169,9 @@ public class TelaRevista
             Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
             return null;
         }
-     
+
         Revista revista = new Revista(titulo, numeroEdicao, dataLancamento, caixa);
 
         return revista;
-    }
-
-    public void ExibirCabecalho()
-    {
-        Console.Clear();
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("|      Controle de Revistas     |");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine();
-    }
-
-
-    public StatusRevista ExibirStatus()
-    {
-        Console.WriteLine();
-
-        Console.WriteLine("1 - Disponível");
-        Console.WriteLine("2 - Emprestada");
-        Console.WriteLine("3 - Reservada");
-        Console.WriteLine();
-
-        int opcao;
-        bool opcaoValida;
-        do
-        {
-            Console.Write("Escolha o Status: ");
-            opcaoValida = int.TryParse(Console.ReadLine(), out opcao);
-
-            if (!opcaoValida || opcao < 1 || opcao > 3)
-            {
-                Notificador.ExibirMensagem("Opção Inválida!", ConsoleColor.Red);
-                opcaoValida = false;
-            }
-        } while (!opcaoValida);
-
-
-        return (StatusRevista)(opcao - 1);
     }
 }

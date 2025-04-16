@@ -45,7 +45,7 @@ public class Emprestimo : EntidadeBase
 
     public DateTime ObterDataDevolucao()
     {
-        DateTime dataDevolucao = Data.AddDays(Revista.caixa.DiasEmprestimo);
+        DateTime dataDevolucao = Data.AddDays(Revista.Caixa.DiasEmprestimo);
         this.DataDevolucao = dataDevolucao;
         
         return dataDevolucao;

@@ -123,7 +123,7 @@ public class TelaEmprestimo : TelaBase
             "Id", "Amigo", "Revista", "Data de Abertura", "Data de Devolução", "Status"
         );
 
-        EntidadeBase[] registros = repositorioAmigo.SelecionarRegistros();
+        EntidadeBase[] registros = repositorioEmprestimo.SelecionarRegistros();
         Emprestimo[] emprestimos = new Emprestimo[registros.Length];
 
         for (int i = 0; i < registros.Length; i++)
@@ -139,7 +139,7 @@ public class TelaEmprestimo : TelaBase
             
             Console.WriteLine(
                 "{0, -10} | {1, -15} | {2, -15} | {3, -17} | {4, -17} | {5, -15}",
-                e.Id, e.Amigo.Nome, e.Revista.titulo, e.Data.ToShortDateString(), e.DataDevolucao.ToShortDateString(), e.Status
+                e.Id, e.Amigo.Nome, e.Revista.Titulo, e.Data.ToShortDateString(), e.DataDevolucao.ToShortDateString(), e.Status
             );
             
             Console.ResetColor();
@@ -191,7 +191,11 @@ public class TelaEmprestimo : TelaBase
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        Revista[] revistas = repositorioRevista.SelecionarTodos();
+        EntidadeBase[] registros = repositorioRevista.SelecionarRegistros();
+        Revista[] revistas = new Revista[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            revistas[i] = (Revista)registros[i];
 
         foreach (Revista r in revistas)
         {
@@ -199,15 +203,11 @@ public class TelaEmprestimo : TelaBase
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.Etiqueta
+            r.Id, r.Titulo, r.NumeroEdicao, r.DataPublicacao.ToShortDateString(), r.Status, r.Caixa.Etiqueta
             );
         }
     }
 
-    public override EntidadeBase VerificarObterDados(bool verificacao = true)
-    {
-        return base.VerificarObterDados(false);
-    }
 
     public override Emprestimo ObterDados(bool editarData)
     {
@@ -254,7 +254,7 @@ public class TelaEmprestimo : TelaBase
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        Revista revista = repositorioRevista.SelecionarPorId(idRevista);
+        Revista revista = (Revista)repositorioRevista.SelecionarRegistroPorId(idRevista);
 
         if (revista == null)
         {
@@ -263,13 +263,13 @@ public class TelaEmprestimo : TelaBase
         }
 
 
-        if (revista.status == StatusRevista.Emprestada)
+        if (revista.Status == StatusRevista.Emprestada && !editarData)
         {
             Notificador.ExibirMensagem("A Revista não está disponível!", ConsoleColor.Red);
             return null;
         }
 
-        else if (revista.status == StatusRevista.Reservada)
+        else if (revista.Status == StatusRevista.Reservada)
         {
             bool verificacao = repositorioReserva.VerificarRevistaAmigo(revista, amigo);
 

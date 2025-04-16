@@ -80,7 +80,7 @@ public class TelaReserva
             if (!idRevistaValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idRevistaValido);
 
-        Revista revista = repositorioRevista.SelecionarPorId(idRevista);
+        Revista revista = (Revista)repositorioRevista.SelecionarRegistroPorId(idRevista);
 
         if (revista == null)
         {
@@ -88,7 +88,7 @@ public class TelaReserva
             return;
         }
 
-        if (revista.status == StatusRevista.Emprestada || revista.status == StatusRevista.Reservada)
+        if (revista.Status == StatusRevista.Emprestada || revista.Status == StatusRevista.Reservada)
         {
             Notificador.ExibirMensagem("Revista não disponível!", ConsoleColor.Red);
             return;
@@ -130,7 +130,7 @@ public class TelaReserva
             return;
         }
 
-        if (reserva.Revista.status == StatusRevista.Emprestada)
+        if (reserva.Revista.Status == StatusRevista.Emprestada)
         {
             Notificador.ExibirMensagem($"A revista da reserva está emprestada no momento!", ConsoleColor.Red);
             return;
@@ -165,7 +165,7 @@ public class TelaReserva
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -15} | {3, -19} | {4, -15}",
-            r.Id, r.Amigo.Nome, r.Revista.titulo, r.DataReserva.ToShortDateString(), r.Status
+            r.Id, r.Amigo.Nome, r.Revista.Titulo, r.DataReserva.ToShortDateString(), r.Status
             );
         }
 
@@ -180,7 +180,11 @@ public class TelaReserva
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        Revista[] revistas = repositorioRevista.SelecionarTodos();
+        EntidadeBase[] registros = repositorioRevista.SelecionarRegistros();
+        Revista[] revistas = new Revista[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            revistas[i] = (Revista)registros[i];
 
         foreach (Revista r in revistas)
         {
@@ -188,7 +192,7 @@ public class TelaReserva
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.Etiqueta
+            r.Id, r.Titulo, r.NumeroEdicao, r.DataPublicacao.ToShortDateString(), r.Status, r.Caixa.Etiqueta
             );
         }
     }

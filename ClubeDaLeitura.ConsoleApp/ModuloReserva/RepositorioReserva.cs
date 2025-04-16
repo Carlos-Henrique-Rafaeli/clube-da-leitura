@@ -23,7 +23,7 @@ public class RepositorioReserva
         {
             if (r == null) continue;
 
-            if (r.Revista.id == revista.id && r.Amigo.Id == amigo.Id) return true;
+            if (r.Revista.Id == revista.Id && r.Amigo.Id == amigo.Id) return true;
         }
         return false;
     }

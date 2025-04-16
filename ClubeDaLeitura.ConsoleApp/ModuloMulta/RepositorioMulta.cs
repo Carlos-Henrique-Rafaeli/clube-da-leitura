@@ -10,7 +10,7 @@ public class RepositorioMulta
 
     public void Inserir(Multa novaMulta)
     {
-        novaMulta.id = GeradorIds.GerarIdMulta();
+        novaMulta.Id = GeradorIds.GerarIdMulta();
 
         multas[contadorMulta++] = novaMulta;
     }
@@ -31,7 +31,7 @@ public class RepositorioMulta
         {
             if (m == null) continue;
 
-            if (m.id == idMulta) return m;
+            if (m.Id == idMulta) return m;
         }
 
         return null;

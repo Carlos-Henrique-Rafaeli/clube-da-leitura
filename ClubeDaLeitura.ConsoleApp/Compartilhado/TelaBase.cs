@@ -60,7 +60,9 @@ public abstract class TelaBase
 
         Console.WriteLine();
 
-        EntidadeBase novoRegistro = VerificarObterDados();
+        EntidadeBase novoRegistro = ObterDados(false);
+
+        if (novoRegistro == null) return;
 
         string erros = novoRegistro.Validar();
 
@@ -82,10 +84,6 @@ public abstract class TelaBase
         Notificador.ExibirMensagem("O registro foi concluído com sucesso!", ConsoleColor.Green);
     }
 
-    public virtual EntidadeBase VerificarObterDados(bool verificacao = true)
-    {
-        return ObterDados(verificacao);
-    }
 
     public void EditarRegistro()
     {
@@ -109,7 +107,9 @@ public abstract class TelaBase
         } while (!idValido);
         Console.WriteLine();
 
-        EntidadeBase registroEditado = VerificarObterDados();
+        EntidadeBase registroEditado = ObterDados(true);
+
+        if (registroEditado == null) return;
 
         string erros = registroEditado.Validar();
 
@@ -172,6 +172,8 @@ public abstract class TelaBase
 
         if (!validacao) return;
 
+        ExcluirExtras(registroParaExcluir);
+
         bool conseguiuExcluir = repositorio.ExcluirRegistro(idRegistro);
 
         if (!conseguiuExcluir)
@@ -184,6 +186,10 @@ public abstract class TelaBase
         Notificador.ExibirMensagem("O registro foi excluído com sucesso!", ConsoleColor.Green);
     }
 
+    public virtual void ExcluirExtras(EntidadeBase registro)
+    {
+
+    }
 
     public virtual bool ValidarExlcuir(EntidadeBase registro, int idRegistro)
     {
