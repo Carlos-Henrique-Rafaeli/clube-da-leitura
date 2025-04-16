@@ -188,7 +188,7 @@ public class TelaReserva
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.etiqueta
+            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.Etiqueta
             );
         }
     }

@@ -1,4 +1,5 @@
-﻿using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.Util;
 using System.Drawing;
 
@@ -182,7 +183,7 @@ public class TelaRevista
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.etiqueta
+            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.Etiqueta
             );
         }
 
@@ -200,17 +201,21 @@ public class TelaRevista
             "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
         );
 
-        Caixa[] caixas = repositorioCaixa.SelecionarTodos();
+        EntidadeBase[] registros = repositorioCaixa.SelecionarRegistros();
+        Caixa[] caixas = new Caixa[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            caixas[i] = (Caixa)registros[i];
 
         foreach (Caixa c in caixas)
         {
             if (c == null) continue;
 
-            Console.ForegroundColor = GerenciadorDeCor.CorParaConsoleColor(c.cor);
+            Console.ForegroundColor = GerenciadorDeCor.CorParaConsoleColor(c.Cor);
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -10} | {3, -15}",
-            c.id, c.etiqueta, GerenciadorDeCor.CorParaString(c.cor), c.diasEmprestimo
+            c.Id, c.Etiqueta, GerenciadorDeCor.CorParaString(c.Cor), c.DiasEmprestimo
             );
             Console.ResetColor();
         }
@@ -256,7 +261,7 @@ public class TelaRevista
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        Caixa caixa = repositorioCaixa.SelecionarPorId(idCaixa);
+        Caixa caixa = (Caixa)repositorioCaixa.SelecionarRegistroPorId(idCaixa);
 
         if (caixa == null)
         {

@@ -9,8 +9,16 @@ public abstract class RepositorioBase
     {
         novoRegistro.Id = ++contadorIds;
 
+        ExtrasCadastro(novoRegistro);
+
         InserirRegistro(novoRegistro);
     }
+
+    public virtual void ExtrasCadastro(EntidadeBase registro)
+    {
+
+    }
+
     
     public bool EditarRegistro(int idRegistro, EntidadeBase registroEditado)
     {

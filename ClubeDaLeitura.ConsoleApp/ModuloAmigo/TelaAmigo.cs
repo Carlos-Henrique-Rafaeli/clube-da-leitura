@@ -13,8 +13,7 @@ public class TelaAmigo : TelaBase
         this.repositorioAmigo = repositorioAmigo;
     }
 
-
-    public override bool ValidarEditar(EntidadeBase registroEditado, int idRegistro)
+    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro)
     {
         Amigo amigoEditado = (Amigo)registroEditado;
 
@@ -80,7 +79,7 @@ public class TelaAmigo : TelaBase
     }
 
 
-    public override Amigo ObterDados()
+    public override Amigo ObterDados(bool validacaoExtra)
     {
         Console.Write("Digite o nome do Amigo: ");
         string nome = Console.ReadLine()!;

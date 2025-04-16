@@ -1,84 +1,34 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
-public class RepositorioEmprestimo
+public class RepositorioEmprestimo : RepositorioBase
 {
-    Emprestimo[] emprestimos = new Emprestimo[100];
-    int contadorEmprestimos = 0;
-
-    public void Inserir(Emprestimo novoEmprestimo)
+    public override void ExtrasCadastro(EntidadeBase registro)
     {
-        novoEmprestimo.id = GeradorIds.GerarIdEmprestimo();
-        novoEmprestimo.revista.Emprestar();
-        novoEmprestimo.amigo.TemEmprestimo = true;
+        Emprestimo novoEmprestimo = (Emprestimo)registro;
 
-        emprestimos[contadorEmprestimos++] = novoEmprestimo;
+        novoEmprestimo.Revista.Emprestar();
+        novoEmprestimo.Amigo.TemEmprestimo = true;
     }
-
-    public bool Editar(int idEmprestimo, Emprestimo emprestimoEditado)
-    {
-        if (emprestimoEditado == null) return false;
-
-        foreach (Emprestimo e in emprestimos)
-        {
-            if (e == null) continue;
-
-            if (e.id == idEmprestimo)
-            {
-                e.amigo = emprestimoEditado.amigo;
-                e.revista = emprestimoEditado.revista;
-                e.data = emprestimoEditado.data;
-                e.ObterDataDevolucao();
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public bool Excluir(int idEmprestimo)
-    {
-        for (int i = 0; i < emprestimos.Length; i++)
-        {
-            if (emprestimos[i] == null) continue;
-
-            if (emprestimos[i].id == idEmprestimo)
-            {
-                emprestimos[i] = null;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Emprestimo[] SelecionarTodos()
-    {
-        return emprestimos;
-    }
-
-    public Emprestimo SelecionarPorId(int idEmprestimo)
-    {
-        foreach (Emprestimo e in emprestimos)
-        {
-            if (e == null) continue;
-
-            if (e.id == idEmprestimo) return e;
-        }
-        return null;
-    }
-
     public bool VerificarEmprestimo(Emprestimo emprestimo, int idEmprestimo = -1)
     {
+        EntidadeBase[] registros = this.SelecionarRegistros();
+        Emprestimo[] emprestimos = new Emprestimo[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            emprestimos[i] = (Emprestimo)registros[i];
+
         foreach (Emprestimo e in emprestimos)
         {
-            if (e == null || e.status == StatusEmprestimo.Fechado) continue;
+            if (e == null || e.Status == StatusEmprestimo.Fechado) continue;
 
-            if (e.id == idEmprestimo) continue;
+            if (e.Id == idEmprestimo) continue;
 
-            if (emprestimo.amigo.TemEmprestimo) return true;
+            if (emprestimo.Amigo.TemEmprestimo) return true;
         }
 
         return false;

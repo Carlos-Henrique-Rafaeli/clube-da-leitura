@@ -1,59 +1,70 @@
-﻿using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
-public class Emprestimo
+public class Emprestimo : EntidadeBase
 {
-    public int id;
-    public Amigo amigo;
-    public Revista revista;
-    public DateTime data;
-    public DateTime dataDevolucao;
-    public StatusEmprestimo status;
+    public Amigo Amigo { get; set; }
+    public Revista Revista { get; set; }
+    public DateTime Data { get; set; }
+    public DateTime DataDevolucao { get; set; }
+    public StatusEmprestimo Status { get; set; }
 
     public Emprestimo(Amigo amigo, Revista revista, DateTime data)
     {
-        this.amigo = amigo;
-        this.revista = revista;
-        this.data = data;
-        dataDevolucao = ObterDataDevolucao();
-        status = StatusEmprestimo.Aberto;
+        this.Amigo = amigo;
+        this.Revista = revista;
+        this.Data = data;
+        DataDevolucao = ObterDataDevolucao();
+        Status = StatusEmprestimo.Aberto;
     }
 
-    public string Validar()
+    public override string Validar()
     {
         string erros = "";
 
-        if (amigo == null) erros += "O campo 'Amigo' está inválido\n";
+        if (Amigo == null) erros += "O campo 'Amigo' está inválido\n";
         
-        if (revista == null) erros += "O campo 'Revista' está inválido\n";
-        
+        if (Revista == null) erros += "O campo 'Revista' está inválido\n";
 
         return erros;
     }
 
+    public override void AtualizarRegistro(EntidadeBase registroEditado)
+    {
+        Emprestimo emprestimo = (Emprestimo)registroEditado;
+
+        Amigo = emprestimo.Amigo;
+        Revista = emprestimo.Revista;
+        Data = emprestimo.Data;
+        DataDevolucao = emprestimo.DataDevolucao;
+    }
+
     public DateTime ObterDataDevolucao()
     {
-        DateTime dataDevolucao = data.AddDays(revista.caixa.diasEmprestimo);
-        this.dataDevolucao = dataDevolucao;
+        DateTime dataDevolucao = Data.AddDays(Revista.caixa.DiasEmprestimo);
+        this.DataDevolucao = dataDevolucao;
         
         return dataDevolucao;
     }
 
     public void VerificarAtraso()
     {
-        if (status == StatusEmprestimo.Fechado) return;
+        if (Status == StatusEmprestimo.Fechado) return;
 
-        if (dataDevolucao < DateTime.Now) status = StatusEmprestimo.Atrasado;
+        if (DataDevolucao < DateTime.Now) Status = StatusEmprestimo.Atrasado;
     }
 
     public void RegistrarDevolucao()
     {
-        status = StatusEmprestimo.Fechado;
-        amigo.TemEmprestimo = false;
+        Status = StatusEmprestimo.Fechado;
+        Amigo.TemEmprestimo = false;
 
-        revista.Devolver();
+        Revista.Devolver();
     }
+
+    
 }

@@ -63,13 +63,13 @@ internal class Program
 
                         switch (opcaoSelecionada)
                         {
-                            case "1": telaCaixa.Inserir(); break;
+                            case "1": telaCaixa.CadastrarRegistro(); break;
                             
-                            case "2": telaCaixa.Editar(); break;
+                            case "2": telaCaixa.EditarRegistro(); break;
                             
-                            case "3": telaCaixa.Excluir(); break;
+                            case "3": telaCaixa.ExcluirRegistro(); break;
                             
-                            case "4": telaCaixa.Visualizar(true); break;
+                            case "4": telaCaixa.VisualizarRegistros(true); break;
 
                             case "S": deveRodar = false; break;
 
@@ -107,13 +107,13 @@ internal class Program
 
                         switch (opcaoSelecionada)
                         {
-                            case "1": telaEmprestimo.Inserir(); break;
+                            case "1": telaEmprestimo.CadastrarRegistro(); break;
                             
-                            case "2": telaEmprestimo.Editar(); break;
+                            case "2": telaEmprestimo.EditarRegistro(); break;
 
-                            case "3": telaEmprestimo.Excluir(); break;
+                            case "3": telaEmprestimo.ExcluirRegistro(); break;
                             
-                            case "4": telaEmprestimo.VisualizarTodos(true); break;
+                            case "4": telaEmprestimo.VisualizarRegistros(true); break;
                             
                             case "5": telaEmprestimo.RegistrarDevolucao(); break;
                                 

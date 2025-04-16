@@ -12,13 +12,13 @@ public class Multa
     public Multa(Emprestimo emprestimo)
     {
         this.emprestimo = emprestimo;
-        emprestimo.amigo.TemMulta = true;
+        emprestimo.Amigo.TemMulta = true;
         ObterValorMulta();
     }
 
     public void ObterValorMulta()
     {
-        int diasAtraso = (DateTime.Now - emprestimo.dataDevolucao).Days;
+        int diasAtraso = (DateTime.Now - emprestimo.DataDevolucao).Days;
 
         valorMulta = diasAtraso * 2.0;
     }

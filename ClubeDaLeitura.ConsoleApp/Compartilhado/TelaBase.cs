@@ -32,7 +32,7 @@ public abstract class TelaBase
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        string operacaoEscolhida = Console.ReadLine()!;
+        string operacaoEscolhida = Console.ReadLine()!.ToUpper();
 
         return operacaoEscolhida;
     }
@@ -49,7 +49,7 @@ public abstract class TelaBase
 
 
 
-    public virtual void CadastrarRegistro()
+    public void CadastrarRegistro()
     {
         ExibirCabecalho();
 
@@ -60,7 +60,7 @@ public abstract class TelaBase
 
         Console.WriteLine();
 
-        EntidadeBase novoRegistro = ObterDados();
+        EntidadeBase novoRegistro = VerificarObterDados();
 
         string erros = novoRegistro.Validar();
 
@@ -73,9 +73,18 @@ public abstract class TelaBase
             return;
         }
 
+        bool validacao = ValidarInserirEditar(novoRegistro);
+
+        if (!validacao) return;
+
         repositorio.CadastrarRegistro(novoRegistro);
 
         Notificador.ExibirMensagem("O registro foi concluído com sucesso!", ConsoleColor.Green);
+    }
+
+    public virtual EntidadeBase VerificarObterDados(bool verificacao = true)
+    {
+        return ObterDados(verificacao);
     }
 
     public void EditarRegistro()
@@ -98,10 +107,9 @@ public abstract class TelaBase
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
-
         Console.WriteLine();
 
-        EntidadeBase registroEditado = ObterDados();
+        EntidadeBase registroEditado = VerificarObterDados();
 
         string erros = registroEditado.Validar();
 
@@ -114,7 +122,7 @@ public abstract class TelaBase
             return;
         }
 
-        bool validacao = ValidarEditar(registroEditado, idRegistro);
+        bool validacao = ValidarInserirEditar(registroEditado, idRegistro);
 
         if (!validacao) return;
 
@@ -130,7 +138,7 @@ public abstract class TelaBase
         Notificador.ExibirMensagem("O registro foi editado com sucesso!", ConsoleColor.Green);
     }
 
-    public virtual bool ValidarEditar(EntidadeBase registroEditado, int idRegistro)
+    public virtual bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
     {
         return true;
     }
@@ -185,6 +193,6 @@ public abstract class TelaBase
 
     public abstract void VisualizarRegistros(bool exibirTitulo);
 
-    public abstract EntidadeBase ObterDados();
+    public abstract EntidadeBase ObterDados(bool validacaoExtra);
 
 }

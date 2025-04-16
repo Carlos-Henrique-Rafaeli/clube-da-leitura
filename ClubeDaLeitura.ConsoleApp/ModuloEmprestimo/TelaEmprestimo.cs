@@ -8,7 +8,7 @@ using ClubeDaLeitura.ConsoleApp.Util;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
-public class TelaEmprestimo
+public class TelaEmprestimo : TelaBase
 {
     RepositorioEmprestimo repositorioEmprestimo;
     RepositorioAmigo repositorioAmigo;
@@ -16,7 +16,10 @@ public class TelaEmprestimo
     RepositorioMulta repositorioMulta;
     RepositorioReserva repositorioReserva;
 
-    public TelaEmprestimo(RepositorioEmprestimo repositorioEmprestimo, RepositorioAmigo repositorioAmigo, RepositorioRevista repositorioRevista, RepositorioMulta repositorioMulta, RepositorioReserva repositorioReserva)
+    public TelaEmprestimo(RepositorioEmprestimo repositorioEmprestimo, 
+        RepositorioAmigo repositorioAmigo, RepositorioRevista repositorioRevista, 
+        RepositorioMulta repositorioMulta, RepositorioReserva repositorioReserva) 
+        : base("Empréstimo", repositorioEmprestimo)
     {
         this.repositorioEmprestimo = repositorioEmprestimo;
         this.repositorioAmigo = repositorioAmigo;
@@ -24,159 +27,37 @@ public class TelaEmprestimo
         this.repositorioMulta = repositorioMulta;
         this.repositorioReserva = repositorioReserva;
     }
-    public string ApresentarMenu()
+    public override void MostrarOpcoes()
     {
-        ExibirCabecalho();
-
         Console.WriteLine("1 - Inserir Novo Empréstimo");
         Console.WriteLine("2 - Editar Empréstimo");
         Console.WriteLine("3 - Excluir Empréstimo");
         Console.WriteLine("4 - Visualizar Empréstimos");
         Console.WriteLine("5 - Devolução Empréstimo");
         Console.WriteLine("S - Voltar ao Menu");
-        Console.WriteLine();
-
-        Console.Write("Digite uma opção válida: ");
-        string opcaoEscolhida = Console.ReadLine()!.ToUpper();
-        return opcaoEscolhida;
     }
 
-    public void Inserir()
+    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
     {
-        ExibirCabecalho();
+        Emprestimo novoEmprestimo = (Emprestimo)registroEditado;
 
-        Console.WriteLine("Cadastrando Empréstimo...");
-        Console.WriteLine("---------------------------------");
-
-        Emprestimo novoEmprestimo = ObterDadosEmprestimo(false);
-
-        if (novoEmprestimo == null) return;
-
-        string erros = novoEmprestimo.Validar();
-
-        if (erros.Length > 0)
-        {
-            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Inserir();
-            return;
-        }
-
-        bool verificacao = repositorioEmprestimo.VerificarEmprestimo(novoEmprestimo);
-
-        if (verificacao)
-        {
-            Notificador.ExibirMensagem("O amigo selecionado já contém um empréstimo!", ConsoleColor.Red);
-            return;
-        }
-
-        repositorioEmprestimo.Inserir(novoEmprestimo);
-        Notificador.ExibirMensagem("Empréstimo adicionado com sucesso!", ConsoleColor.Green);
-    }
-
-    
-    public void Editar()
-    {
-        ExibirCabecalho();
-
-        Console.WriteLine("Editando Empréstimo...");
-        Console.WriteLine("---------------------------------");
-
-        VisualizarTodos(false);
-
-        int idEmprestimo;
-        bool idValido;
-        do
-        {
-            Console.Write("Selecione o ID do Empréstimo que deseja editar: ");
-            idValido = int.TryParse(Console.ReadLine(), out idEmprestimo);
-
-            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
-
-        Emprestimo emprestimo = repositorioEmprestimo.SelecionarPorId(idEmprestimo);
-
-        if (emprestimo == null)
-        {
-            Notificador.ExibirMensagem($"Não existe Empréstimo com o id {idEmprestimo}!", ConsoleColor.Red);
-            return;
-        }
-
-        if (emprestimo.status == StatusEmprestimo.Fechado)
+        if (novoEmprestimo.Status == StatusEmprestimo.Fechado)
         {
             Notificador.ExibirMensagem("Edição de Empréstimo teve falha!", ConsoleColor.Red);
-            return;
+            return false;
         }
 
 
-        Emprestimo emprestimoEditado = ObterDadosEmprestimo(true);
-
-        if (emprestimoEditado == null) return;
-
-        string erros = emprestimoEditado.Validar();
-
-        if (erros.Length > 0)
-        {
-            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Editar();
-            return;
-        }
-
-        bool verificacao = repositorioEmprestimo.VerificarEmprestimo(emprestimoEditado, idEmprestimo);
+        bool verificacao = repositorioEmprestimo.VerificarEmprestimo(novoEmprestimo, idRegistro);
 
         if (verificacao)
         {
             Notificador.ExibirMensagem("O amigo selecionado já contém um empréstimo!", ConsoleColor.Red);
-            return;
+            return false;
         }
 
-        bool conseguiuEditar = repositorioEmprestimo.Editar(idEmprestimo, emprestimoEditado);
-
-        if (!conseguiuEditar)
-        {
-            Notificador.ExibirMensagem("Erro ao editar Empréstimo!", ConsoleColor.Red);
-            return;
-        }
-
-        Notificador.ExibirMensagem("Empréstimo editado com sucesso!", ConsoleColor.Green);
-
+        return true;
     }
-    
-    public void Excluir()
-    {
-        ExibirCabecalho();
-
-        Console.WriteLine("Excluindo Empréstimo...");
-        Console.WriteLine("---------------------------------");
-
-        VisualizarTodos(false);
-
-        int idEmprestimo;
-        bool idValido;
-        do
-        {
-            Console.Write("Selecione o ID da Empréstimo que deseja excluir: ");
-            idValido = int.TryParse(Console.ReadLine(), out idEmprestimo);
-
-            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
-
-        if (repositorioEmprestimo.SelecionarPorId(idEmprestimo) == null)
-        {
-            Notificador.ExibirMensagem($"Não existe Empréstimo com o id {idEmprestimo}!", ConsoleColor.Red);
-            return;
-        }
-
-        bool conseguiuExcluir = repositorioEmprestimo.Excluir(idEmprestimo);
-
-        if (!conseguiuExcluir)
-        {
-            Notificador.ExibirMensagem("Erro ao excluir Empréstimo!", ConsoleColor.Red);
-            return;
-        }
-
-        Notificador.ExibirMensagem("Empréstimo excluída com sucesso!", ConsoleColor.Green);
-    }
-
 
     public void RegistrarDevolucao()
     {
@@ -185,7 +66,7 @@ public class TelaEmprestimo
         Console.WriteLine("Devolução Empréstimo...");
         Console.WriteLine("---------------------------------");
 
-        VisualizarTodos(false);
+        VisualizarRegistros(false);
 
         int idEmprestimo;
         bool idValido;
@@ -197,7 +78,7 @@ public class TelaEmprestimo
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        Emprestimo emprestimo = repositorioEmprestimo.SelecionarPorId(idEmprestimo);
+        Emprestimo emprestimo = (Emprestimo)repositorioEmprestimo.SelecionarRegistroPorId(idEmprestimo);
 
         if (emprestimo == null)
         {
@@ -205,19 +86,19 @@ public class TelaEmprestimo
             return;
         }
 
-        if (emprestimo.status == StatusEmprestimo.Fechado)
+        if (emprestimo.Status == StatusEmprestimo.Fechado)
         {
             Notificador.ExibirMensagem("Devolução de Empréstimo teve falha!", ConsoleColor.Red);
             return;
         }
 
-        if (emprestimo.status == StatusEmprestimo.Atrasado)
+        if (emprestimo.Status == StatusEmprestimo.Atrasado)
         {
             Multa novaMulta = new Multa(emprestimo);
             repositorioMulta.Inserir(novaMulta);
         }
 
-        Reserva reserva = repositorioReserva.SelecionarPorRevistaAmigo(emprestimo.revista, emprestimo.amigo);
+        Reserva reserva = repositorioReserva.SelecionarPorRevistaAmigo(emprestimo.Revista, emprestimo.Amigo);
 
         if (reserva != null) reserva.Status = StatusReserva.Concluída;
 
@@ -227,7 +108,7 @@ public class TelaEmprestimo
     }
 
 
-    public void VisualizarTodos(bool exibirTitulo)
+    public override void VisualizarRegistros(bool exibirTitulo)
     {
         if (exibirTitulo)
         {
@@ -242,7 +123,11 @@ public class TelaEmprestimo
             "Id", "Amigo", "Revista", "Data de Abertura", "Data de Devolução", "Status"
         );
 
-        Emprestimo[] emprestimos = repositorioEmprestimo.SelecionarTodos();
+        EntidadeBase[] registros = repositorioAmigo.SelecionarRegistros();
+        Emprestimo[] emprestimos = new Emprestimo[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            emprestimos[i] = (Emprestimo)registros[i];
 
         foreach (Emprestimo e in emprestimos)
         {
@@ -250,11 +135,11 @@ public class TelaEmprestimo
 
             e.VerificarAtraso();
 
-            if (e.status == StatusEmprestimo.Atrasado) Console.ForegroundColor = ConsoleColor.Yellow;
+            if (e.Status == StatusEmprestimo.Atrasado) Console.ForegroundColor = ConsoleColor.Yellow;
             
             Console.WriteLine(
                 "{0, -10} | {1, -15} | {2, -15} | {3, -17} | {4, -17} | {5, -15}",
-                e.id, e.amigo.Nome, e.revista.titulo, e.data.ToShortDateString(), e.dataDevolucao.ToShortDateString(), e.status
+                e.Id, e.Amigo.Nome, e.Revista.titulo, e.Data.ToShortDateString(), e.DataDevolucao.ToShortDateString(), e.Status
             );
             
             Console.ResetColor();
@@ -314,12 +199,17 @@ public class TelaEmprestimo
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -13} | {3, -19} | {4, -15} | {5, -15}",
-            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.etiqueta
+            r.id, r.titulo, r.numeroEdicao, r.dataPublicacao.ToShortDateString(), r.status, r.caixa.Etiqueta
             );
         }
     }
 
-    public Emprestimo ObterDadosEmprestimo(bool editarData)
+    public override EntidadeBase VerificarObterDados(bool verificacao = true)
+    {
+        return base.VerificarObterDados(false);
+    }
+
+    public override Emprestimo ObterDados(bool editarData)
     {
         VisualizarAmigos();
 
@@ -413,14 +303,4 @@ public class TelaEmprestimo
             return novoEmprestimo;
         }
     }
-    public void ExibirCabecalho()
-    {
-        Console.Clear();
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("|     Controle de Empréstimo    |");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine();
-    }
-
-
 }

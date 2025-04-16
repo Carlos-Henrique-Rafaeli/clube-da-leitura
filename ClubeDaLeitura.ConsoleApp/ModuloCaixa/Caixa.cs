@@ -1,46 +1,57 @@
-﻿using System.Drawing;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using System.Drawing;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-public class Caixa
+public class Caixa : EntidadeBase
 {
-    public int id;
-    public string etiqueta;
-    public Color cor;
-    public int diasEmprestimo;
-
-    public int revistas;
+    public string Etiqueta { get; set; }
+    public Color Cor { get; set; }
+    public int DiasEmprestimo { get; set; }
+    public int Revistas { get; set; }
 
     public Caixa(string etiqueta, Color cor, int diasEmprestimo)
     {
-        this.etiqueta = etiqueta;
-        this.cor = cor;
-        this.diasEmprestimo = diasEmprestimo;
-        revistas = 0;
+        this.Etiqueta = etiqueta;
+        this.Cor = cor;
+        this.DiasEmprestimo = diasEmprestimo;
+        Revistas = 0;
     }
 
-    public string Validar()
+    public override string Validar()
     {
         string erros = "";
 
-        if (string.IsNullOrWhiteSpace(etiqueta)) erros += "O campo 'Etiqueta' é obrigatório\n";
+        if (string.IsNullOrWhiteSpace(Etiqueta)) erros += "O campo 'Etiqueta' é obrigatório\n";
         
-        else if (etiqueta.Length < 3 || etiqueta.Length > 50) erros += "O campo 'Etiqueta' necessita entre 3 e 50 caracteres\n";
+        else if (Etiqueta.Length < 3 || Etiqueta.Length > 50) erros += "O campo 'Etiqueta' necessita entre 3 e 50 caracteres\n";
         
-        else if (etiqueta.Contains(' ')) erros += "O campo 'Etiqueta' deve ser um nome único sem espaços\n";
+        else if (Etiqueta.Contains(' ')) erros += "O campo 'Etiqueta' deve ser um nome único sem espaços\n";
 
-        if (diasEmprestimo < 0) erros += "O campo 'Dias de Empréstimo' não pode ser negativo";
+        if (DiasEmprestimo < 0) erros += "O campo 'Dias de Empréstimo' não pode ser negativo";
 
         return erros;
     }
 
+    public override void AtualizarRegistro(EntidadeBase registroEditado)
+    {
+        Caixa caixa = (Caixa)registroEditado;
+
+        Etiqueta = caixa.Etiqueta;
+        Cor = caixa.Cor;
+        DiasEmprestimo = caixa.DiasEmprestimo;
+
+    }
+
     public void AdicionarRevista()
     {
-        revistas++;
+        Revistas++;
     }
 
     public void RemoverRevista()
     {
-        revistas--;
+        Revistas--;
     }
+
+    
 }

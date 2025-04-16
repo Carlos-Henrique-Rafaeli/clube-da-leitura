@@ -1,171 +1,48 @@
-﻿using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.Util;
 using System.Drawing;
 using System.Runtime.ConstrainedExecution;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-public class TelaCaixa
+public class TelaCaixa : TelaBase
 {
     RepositorioCaixa repositorioCaixa;
 
-    public TelaCaixa(RepositorioCaixa repositorioCaixa)
+    public TelaCaixa(RepositorioCaixa repositorioCaixa) : base("Caixa", repositorioCaixa)
     {
         this.repositorioCaixa = repositorioCaixa;
     }
 
-    public string ApresentarMenu()
+    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
     {
-        ExibirCabecalho();
-
-        Console.WriteLine("1 - Inserir Nova Caixa");
-        Console.WriteLine("2 - Editar Caixa");
-        Console.WriteLine("3 - Excluir Caixa");
-        Console.WriteLine("4 - Visualizar Caixas");
-        Console.WriteLine("S - Voltar ao Menu");
-        Console.WriteLine();
-
-        Console.Write("Digite uma opção válida: ");
-        string opcaoEscolhida = Console.ReadLine()!.ToUpper();
-        return opcaoEscolhida;
-    }
-
-
-    public void Inserir()
-    {
-        ExibirCabecalho();
-
-        Console.WriteLine("Cadastrando Caixa...");
-        Console.WriteLine("---------------------------------");
-
-        Caixa novaCaixa = ObterDadosCaixa();
-
-        string erros = novaCaixa.Validar();
-
-        if (erros.Length > 0)
-        {
-            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Inserir();
-            return;
-        }
-
-        bool verificacao = repositorioCaixa.VerificarEtiqueta(novaCaixa.etiqueta);
+        Caixa novaCaixa = (Caixa)registroEditado;
+        
+        bool verificacao = repositorioCaixa.VerificarEtiqueta(novaCaixa.Etiqueta, idRegistro);
 
         if (verificacao)
         {
             Notificador.ExibirMensagem("Já existe uma caixa com a mesma etiqueta!", ConsoleColor.Red);
-            return;
+            return false;
         }
 
-        repositorioCaixa.Inserir(novaCaixa);
-        Notificador.ExibirMensagem("Caixa adicionada com sucesso!", ConsoleColor.Green);
-
+        return true;
     }
 
-    
-    public void Editar()
+    public override bool ValidarExlcuir(EntidadeBase registro, int idRegistro)
     {
-        ExibirCabecalho();
+        Caixa caixa = (Caixa)registro;
 
-        Console.WriteLine("Editando Amigo...");
-        Console.WriteLine("---------------------------------");
-
-        Visualizar(false);
-
-        int idCaixa;
-        bool idValido;
-        do
+        if (caixa.Revistas > 0)
         {
-            Console.Write("Selecione o ID da caixa que deseja editar: ");
-            idValido = int.TryParse(Console.ReadLine(), out idCaixa);
-
-            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
-
-        if (repositorioCaixa.SelecionarPorId(idCaixa) == null)
-        {
-            Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
-            return;
+            Notificador.ExibirMensagem($"Não foi possível excluir pois existem {caixa.Revistas} revista(s)!", ConsoleColor.Red);
+            return false;
         }
-
-        Caixa caixaEditada = ObterDadosCaixa();
-
-        string erros = caixaEditada.Validar();
-
-        if (erros.Length > 0)
-        {
-            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-            Editar();
-            return;
-        }
-
-        bool verificacao = repositorioCaixa.VerificarEtiqueta(caixaEditada.etiqueta, idCaixa);
-
-        if (verificacao)
-        {
-            Notificador.ExibirMensagem("Já existe uma caixa com a mesma etiqueta!", ConsoleColor.Red);
-            return;
-        }
-
-        bool conseguiuEditar = repositorioCaixa.Editar(idCaixa, caixaEditada);
-
-        if (!conseguiuEditar)
-        {
-            Notificador.ExibirMensagem("Erro ao editar Caixa!", ConsoleColor.Red);
-            return;
-        }
-
-        Notificador.ExibirMensagem("Caixa editada com sucesso!", ConsoleColor.Green);
-
+        return true;
     }
-    
-    public void Excluir()
-    {
-        ExibirCabecalho();
 
-        Console.WriteLine("Excluindo Caixa...");
-        Console.WriteLine("---------------------------------");
-
-        Visualizar(false);
-
-        int idCaixa;
-        bool idValido;
-        do
-        {
-            Console.Write("Selecione o ID da caixa que deseja excluir: ");
-            idValido = int.TryParse(Console.ReadLine(), out idCaixa);
-
-            if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
-
-        Caixa caixa = repositorioCaixa.SelecionarPorId(idCaixa);
-
-        if (caixa == null)
-        {
-            Notificador.ExibirMensagem($"Não existe Caixa com o id {idCaixa}!", ConsoleColor.Red);
-            return;
-        }
-
-
-        if (caixa.revistas > 0)
-        {
-            Notificador.ExibirMensagem($"Não foi possível excluir pois existem {caixa.revistas} revista(s)!", ConsoleColor.Red);
-            return;
-        }
-
-
-        bool conseguiuExcluir = repositorioCaixa.Excluir(idCaixa);
-
-        if (!conseguiuExcluir)
-        {
-            Notificador.ExibirMensagem("Erro ao excluir Caixa!", ConsoleColor.Red);
-            return;
-        }
-
-        Notificador.ExibirMensagem("Caixa excluída com sucesso!", ConsoleColor.Green);
-    }
-    
-    public void Visualizar(bool exibirTitulo)
+    public override void VisualizarRegistros(bool exibirTitulo)
     {
         if (exibirTitulo)
         {
@@ -180,17 +57,21 @@ public class TelaCaixa
             "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
         );
 
-        Caixa[] caixas = repositorioCaixa.SelecionarTodos();
+        EntidadeBase[] registros = repositorioCaixa.SelecionarRegistros();
+        Caixa[] caixas = new Caixa[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            caixas[i] = (Caixa)registros[i];
 
         foreach (Caixa c in caixas)
         {
             if (c == null) continue;
 
-            Console.ForegroundColor = GerenciadorDeCor.CorParaConsoleColor(c.cor);
+            Console.ForegroundColor = GerenciadorDeCor.CorParaConsoleColor(c.Cor);
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -10} | {3, -15}",
-            c.id, c.etiqueta, GerenciadorDeCor.CorParaString(c.cor), c.diasEmprestimo
+            c.Id, c.Etiqueta, GerenciadorDeCor.CorParaString(c.Cor), c.DiasEmprestimo
             );
             Console.ResetColor();
         }
@@ -198,7 +79,7 @@ public class TelaCaixa
         if (exibirTitulo) Console.ReadLine();
     }
     
-    public Caixa ObterDadosCaixa()
+    public override Caixa ObterDados(bool validacaoExtra)
     {
         Console.Write("Digite a etiqueta da Caixa: ");
         string etiqueta = Console.ReadLine()!;
@@ -227,15 +108,6 @@ public class TelaCaixa
         Caixa novaCaixa = new Caixa(etiqueta, cor, diasEmprestimos);
 
         return novaCaixa;
-    }
-
-    public void ExibirCabecalho()
-    {
-        Console.Clear();
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("|       Controle de Caixas      |");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine();
     }
 
     public string ExibirCores()
