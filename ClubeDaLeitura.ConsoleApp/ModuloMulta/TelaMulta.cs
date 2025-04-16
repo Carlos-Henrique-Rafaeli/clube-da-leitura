@@ -1,7 +1,6 @@
-﻿
-using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+﻿using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
+using ClubeDaLeitura.ConsoleApp.Util;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloMulta;
 
@@ -53,7 +52,7 @@ public class TelaMulta
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -15} | {3, -15}",
-            m.id, m.emprestimo.amigo.nome, m.valorMulta.ToString("C2"), m.status
+            m.id, m.emprestimo.amigo.Nome, m.valorMulta.ToString("C2"), m.status
             );
         }
 
@@ -95,7 +94,7 @@ public class TelaMulta
         }
 
 
-        multa.emprestimo.amigo.temMulta = false;
+        multa.emprestimo.amigo.TemMulta = false;
         multa.status = StatusMulta.Quitada;
 
         Notificador.ExibirMensagem("Multa quitada com sucesso!", ConsoleColor.Green);

@@ -1,10 +1,10 @@
-﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+﻿using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloReserva;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
+using ClubeDaLeitura.ConsoleApp.Util;
 
 namespace ClubeDaLeitura.ConsoleApp;
 
@@ -41,13 +41,13 @@ internal class Program
 
                         switch (opcaoSelecionada)
                         {
-                            case "1": telaAmigo.Inserir(); break;
+                            case "1": telaAmigo.CadastrarRegistro(); break;
                             
-                            case "2": telaAmigo.Editar(); break;
+                            case "2": telaAmigo.EditarRegistro(); break;
                             
-                            case "3": telaAmigo.Excluir(); break;
+                            case "3": telaAmigo.ExcluirRegistro(); break;
 
-                            case "4": telaAmigo.VisualizarTodos(true); break;
+                            case "4": telaAmigo.VisualizarRegistros(true); break;
                             
                             case "S": deveRodar = false; break;
 

@@ -1,5 +1,5 @@
-﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+﻿using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+using ClubeDaLeitura.ConsoleApp.Util;
 using System.Drawing;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;

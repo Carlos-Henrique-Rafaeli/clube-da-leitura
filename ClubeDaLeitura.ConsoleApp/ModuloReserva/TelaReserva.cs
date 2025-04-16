@@ -2,6 +2,7 @@
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
+using ClubeDaLeitura.ConsoleApp.Util;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloReserva;
 
@@ -53,7 +54,7 @@ public class TelaReserva
             if (!idAmigoValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idAmigoValido);
 
-        Amigo amigo = repositorioAmigo.SelecionarPorId(idAmigo);
+        Amigo amigo = (Amigo)repositorioAmigo.SelecionarRegistroPorId(idAmigo);
 
         if (amigo == null)
         {
@@ -61,7 +62,7 @@ public class TelaReserva
             return;
         }
 
-        if (amigo.temMulta)
+        if (amigo.TemMulta)
         {
             Notificador.ExibirMensagem("O Amigo contém multas pendentes!", ConsoleColor.Red);
             return;
@@ -164,7 +165,7 @@ public class TelaReserva
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -15} | {3, -19} | {4, -15}",
-            r.Id, r.Amigo.nome, r.Revista.titulo, r.DataReserva.ToShortDateString(), r.Status
+            r.Id, r.Amigo.Nome, r.Revista.titulo, r.DataReserva.ToShortDateString(), r.Status
             );
         }
 
@@ -204,17 +205,21 @@ public class TelaReserva
             "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
-        Amigo[] amigos = repositorioAmigo.SelecionarTodos();
+        EntidadeBase[] registros = repositorioAmigo.SelecionarRegistros();
+        Amigo[] amigos = new Amigo[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            amigos[i] = (Amigo)registros[i];
 
         foreach (Amigo a in amigos)
         {
             if (a == null) continue;
 
-            if (a.temMulta) Console.ForegroundColor = ConsoleColor.Red;
+            if (a.TemMulta) Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine(
             "{0, -10} | {1, -15} | {2, -15} | {3, -15} | {4, -15} | {5, -15}",
-            a.id, a.nome, a.responsavel, a.telefone, a.ObterEmprestimos(), a.ObterMultas()
+            a.Id, a.Nome, a.Responsavel, a.Telefone, a.ObterEmprestimos(), a.ObterMultas()
             );
             Console.ResetColor();
         }

@@ -1,5 +1,5 @@
-﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+﻿using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+using ClubeDaLeitura.ConsoleApp.Util;
 using System.Drawing;
 using System.Runtime.ConstrainedExecution;
 

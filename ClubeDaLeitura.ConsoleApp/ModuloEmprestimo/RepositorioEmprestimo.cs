@@ -13,7 +13,7 @@ public class RepositorioEmprestimo
     {
         novoEmprestimo.id = GeradorIds.GerarIdEmprestimo();
         novoEmprestimo.revista.Emprestar();
-        novoEmprestimo.amigo.temEmprestimo = true;
+        novoEmprestimo.amigo.TemEmprestimo = true;
 
         emprestimos[contadorEmprestimos++] = novoEmprestimo;
     }
@@ -78,7 +78,7 @@ public class RepositorioEmprestimo
 
             if (e.id == idEmprestimo) continue;
 
-            if (emprestimo.amigo.temEmprestimo) return true;
+            if (emprestimo.amigo.TemEmprestimo) return true;
         }
 
         return false;

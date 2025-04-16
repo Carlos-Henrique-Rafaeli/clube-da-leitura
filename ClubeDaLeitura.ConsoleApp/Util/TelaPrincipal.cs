@@ -1,4 +1,4 @@
-﻿namespace ClubeDaLeitura.ConsoleApp.Compartilhado;
+﻿namespace ClubeDaLeitura.ConsoleApp.Util;
 
 public static class TelaPrincipal
 {

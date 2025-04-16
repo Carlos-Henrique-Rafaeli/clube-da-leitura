@@ -1,40 +1,42 @@
-﻿using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
-public class Amigo
+public class Amigo : EntidadeBase
 {
-    public int id;
-    public string nome;
-    public string responsavel;
-    public string telefone;
-    public bool temEmprestimo = false;
-    public bool temMulta = false;
+    public string Nome { get; set; }
+    public string Responsavel { get; set; }
+    public string Telefone { get; set; }
+    public bool TemEmprestimo { get; set; }
+    public bool TemMulta { get; set; }
 
     private int[] telefoneValido = [12, 13];
 
     public Amigo(string nome, string responsavel, string telefone)
     {
-        this.nome = nome;
-        this.responsavel = responsavel;
-        this.telefone = telefone;
+        Nome = nome;
+        Responsavel = responsavel;
+        Telefone = telefone;
+        TemEmprestimo = false;
+        TemMulta = false;
     }
 
-    public string Validar()
+    public override string Validar()
     {
         string erros = "";
 
-        if (string.IsNullOrWhiteSpace(nome)) erros += "O campo 'Nome' é obrigatório\n";
+        if (string.IsNullOrWhiteSpace(Nome)) erros += "O campo 'Nome' é obrigatório\n";
 
-        else if (nome.Length < 3 || nome.Length > 100) erros += "O campo 'Nome' necessita entre 3 e 100 caracteres\n";
+        else if (Nome.Length < 3 || Nome.Length > 100) erros += "O campo 'Nome' necessita entre 3 e 100 caracteres\n";
         
-        if (string.IsNullOrWhiteSpace(responsavel)) erros += "O campo 'Responsável' é obrigatório\n";
+        if (string.IsNullOrWhiteSpace(Responsavel)) erros += "O campo 'Responsável' é obrigatório\n";
         
-        else if (responsavel.Length < 3 || responsavel.Length > 100) erros += "O campo 'Responsável' necessita entre 3 e 100 caracteres\n";
+        else if (Responsavel.Length < 3 || Responsavel.Length > 100) erros += "O campo 'Responsável' necessita entre 3 e 100 caracteres\n";
 
-        if (string.IsNullOrWhiteSpace(telefone)) erros += "O campo 'Telefone' é obrigatório\n";
+        if (string.IsNullOrWhiteSpace(Telefone)) erros += "O campo 'Telefone' é obrigatório\n";
 
-        else if (!telefoneValido.Contains(telefone.Length)) erros += "O campo 'Telefone' precisa ser no formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX";
+        else if (!telefoneValido.Contains(Telefone.Length)) erros += "O campo 'Telefone' precisa ser no formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX";
 
         return erros;
     }
@@ -42,7 +44,7 @@ public class Amigo
     public string ObterEmprestimos()
     {
         string opcao;
-        if (temEmprestimo) opcao = "Sim";
+        if (TemEmprestimo) opcao = "Sim";
         else opcao = "Não";
         return opcao;
     }
@@ -50,8 +52,17 @@ public class Amigo
     public string ObterMultas()
     {
         string opcao;
-        if (temMulta) opcao = "Sim";
+        if (TemMulta) opcao = "Sim";
         else opcao = "Não";
         return opcao;
+    }
+
+    public override void AtualizarRegistro(EntidadeBase registroEditado)
+    {
+        Amigo novoAmigo = (Amigo)registroEditado;
+
+        Nome = novoAmigo.Nome;
+        Responsavel = novoAmigo.Responsavel;
+        Telefone = novoAmigo.Telefone;
     }
 }

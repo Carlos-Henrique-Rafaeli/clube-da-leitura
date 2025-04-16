@@ -52,7 +52,7 @@ public class Emprestimo
     public void RegistrarDevolucao()
     {
         status = StatusEmprestimo.Fechado;
-        amigo.temEmprestimo = false;
+        amigo.TemEmprestimo = false;
 
         revista.Devolver();
     }

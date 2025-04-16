@@ -12,7 +12,7 @@ public class Multa
     public Multa(Emprestimo emprestimo)
     {
         this.emprestimo = emprestimo;
-        emprestimo.amigo.temMulta = true;
+        emprestimo.amigo.TemMulta = true;
         ObterValorMulta();
     }
 

@@ -2,78 +2,24 @@
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
-public class RepositorioAmigo
+public class RepositorioAmigo : RepositorioBase
 {
-    Amigo[] amigos = new Amigo[100];
-    int contadorAmigos = 0;
-
-    public void Inserir(Amigo novoAmigo)
-    {
-        novoAmigo.id = GeradorIds.GerarIdAmigo();
-
-        amigos[contadorAmigos++] = novoAmigo;
-    }
-
-    public bool Editar(int idAmigo, Amigo amigoEditado)
-    {
-        if (amigoEditado == null) return false;
-
-        foreach (Amigo a in amigos)
-        {
-            if (a == null) continue;
-
-            if (a.id == idAmigo)
-            {
-                a.nome = amigoEditado.nome;
-                a.responsavel = amigoEditado.responsavel;
-                a.telefone = amigoEditado.telefone;
-
-                return true;
-            }
-        }
-        return true;
-    }
-
-    public bool Excluir(int idAmigo)
-    {
-        for (int i = 0; i < amigos.Length; i++)
-        {
-            if (amigos[i] == null) continue;
-
-            if (amigos[i].id == idAmigo && !amigos[i].temEmprestimo)
-            {
-                amigos[i] = null;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Amigo[] SelecionarTodos()
-    {
-        return amigos;
-    }
-
-    public Amigo SelecionarPorId(int idAmigo)
-    {
-        foreach (Amigo a in amigos)
-        {
-            if (a == null) continue;
-
-            if (a.id == idAmigo) return a;
-        }
-        return null;
-    }
-
     public bool VerificarNomeTelefone(string nome, string telefone, int id = -1)
     {
+        EntidadeBase[] registros = this.SelecionarRegistros();
+        Amigo[] amigos = new Amigo[registros.Length];
+
+        for (int i = 0; i < registros.Length; i++)
+            amigos[i] = (Amigo)registros[i];
+
+        
         foreach (Amigo a in amigos)
         {
             if (a == null) continue;
 
-            if (a.id == id) continue;
+            if (a.Id == id) continue;
 
-            if (a.nome == nome && a.telefone == telefone) return true;
+            if (a.Nome == nome && a.Telefone == telefone) return true;
         }
 
         return false;
