@@ -2,6 +2,7 @@
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
+using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
@@ -16,13 +17,9 @@ public class RepositorioEmprestimo : RepositorioBase
     }
     public bool VerificarEmprestimo(Emprestimo emprestimo, int idEmprestimo = -1)
     {
-        EntidadeBase[] registros = this.SelecionarRegistros();
-        Emprestimo[] emprestimos = new Emprestimo[registros.Length];
+        ArrayList registros = this.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            emprestimos[i] = (Emprestimo)registros[i];
-
-        foreach (Emprestimo e in emprestimos)
+        foreach (Emprestimo e in registros)
         {
             if (e == null || e.Status == StatusEmprestimo.Fechado) continue;
 

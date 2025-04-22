@@ -1,4 +1,5 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
@@ -6,14 +7,9 @@ public class RepositorioAmigo : RepositorioBase
 {
     public bool VerificarNomeTelefone(string nome, string telefone, int id = -1)
     {
-        EntidadeBase[] registros = this.SelecionarRegistros();
-        Amigo[] amigos = new Amigo[registros.Length];
+        ArrayList registros = this.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            amigos[i] = (Amigo)registros[i];
-
-        
-        foreach (Amigo a in amigos)
+        foreach (Amigo a in registros)
         {
             if (a == null) continue;
 

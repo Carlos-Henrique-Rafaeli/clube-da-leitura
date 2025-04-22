@@ -3,6 +3,7 @@ using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 using ClubeDaLeitura.ConsoleApp.Util;
+using System.Collections;
 using System.Drawing;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
@@ -72,13 +73,9 @@ public class TelaRevista : TelaBase
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        EntidadeBase[] registros = repositorioRevista.SelecionarRegistros();
-        Revista[] revistas = new Revista[registros.Length];
+        ArrayList registros = repositorioRevista.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            revistas[i] = (Revista)registros[i];
-
-        foreach (Revista r in revistas)
+        foreach (Revista r in registros)
         {
             if (r == null) continue;
 
@@ -102,13 +99,9 @@ public class TelaRevista : TelaBase
             "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
         );
 
-        EntidadeBase[] registros = repositorioCaixa.SelecionarRegistros();
-        Caixa[] caixas = new Caixa[registros.Length];
+        ArrayList registros = repositorioCaixa.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            caixas[i] = (Caixa)registros[i];
-
-        foreach (Caixa c in caixas)
+        foreach (Caixa c in registros)
         {
             if (c == null) continue;
 

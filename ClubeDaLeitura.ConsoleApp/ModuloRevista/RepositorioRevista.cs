@@ -2,6 +2,7 @@
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
+using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
@@ -16,13 +17,9 @@ public class RepositorioRevista : RepositorioBase
     
     public bool VerificarTituloEdicao(string titulo, int edicao, int id = -1)
     {
-        EntidadeBase[] registros = this.SelecionarRegistros();
-        Revista[] revistas = new Revista[registros.Length];
+        ArrayList registros = this.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            revistas[i] = (Revista)registros[i];
-
-        foreach (Revista r in revistas)
+        foreach (Revista r in registros)
         {
             if (r == null) continue;
 

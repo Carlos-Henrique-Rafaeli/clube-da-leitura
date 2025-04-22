@@ -5,6 +5,7 @@ using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloReserva;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 using ClubeDaLeitura.ConsoleApp.Util;
+using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
@@ -123,13 +124,9 @@ public class TelaEmprestimo : TelaBase
             "Id", "Amigo", "Revista", "Data de Abertura", "Data de Devolução", "Status"
         );
 
-        EntidadeBase[] registros = repositorioEmprestimo.SelecionarRegistros();
-        Emprestimo[] emprestimos = new Emprestimo[registros.Length];
+        ArrayList registros = repositorioEmprestimo.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            emprestimos[i] = (Emprestimo)registros[i];
-
-        foreach (Emprestimo e in emprestimos)
+        foreach (Emprestimo e in registros)
         {
             if (e == null) continue;
 
@@ -160,13 +157,9 @@ public class TelaEmprestimo : TelaBase
             "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
-        EntidadeBase[] registros = repositorioAmigo.SelecionarRegistros();
-        Amigo[] amigos = new Amigo[registros.Length];
+        ArrayList registros = repositorioAmigo.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            amigos[i] = (Amigo)registros[i];
-
-        foreach (Amigo a in amigos)
+        foreach (Amigo a in registros)
         {
             if (a == null) continue;
 
@@ -191,13 +184,9 @@ public class TelaEmprestimo : TelaBase
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        EntidadeBase[] registros = repositorioRevista.SelecionarRegistros();
-        Revista[] revistas = new Revista[registros.Length];
+        ArrayList registros = repositorioRevista.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            revistas[i] = (Revista)registros[i];
-
-        foreach (Revista r in revistas)
+        foreach (Revista r in registros)
         {
             if (r == null) continue;
 

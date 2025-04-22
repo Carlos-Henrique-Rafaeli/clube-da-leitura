@@ -1,6 +1,7 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.Util;
+using System.Collections;
 using System.Drawing;
 using System.Runtime.ConstrainedExecution;
 
@@ -57,13 +58,9 @@ public class TelaCaixa : TelaBase
             "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
         );
 
-        EntidadeBase[] registros = repositorioCaixa.SelecionarRegistros();
-        Caixa[] caixas = new Caixa[registros.Length];
+        ArrayList registros = repositorioCaixa.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            caixas[i] = (Caixa)registros[i];
-
-        foreach (Caixa c in caixas)
+        foreach (Caixa c in registros)
         {
             if (c == null) continue;
 

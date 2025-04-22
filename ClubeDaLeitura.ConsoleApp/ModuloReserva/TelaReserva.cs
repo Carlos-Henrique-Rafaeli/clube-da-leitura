@@ -3,6 +3,7 @@ using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 using ClubeDaLeitura.ConsoleApp.Util;
+using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloReserva;
 
@@ -180,11 +181,8 @@ public class TelaReserva
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        EntidadeBase[] registros = repositorioRevista.SelecionarRegistros();
-        Revista[] revistas = new Revista[registros.Length];
-
-        for (int i = 0; i < registros.Length; i++)
-            revistas[i] = (Revista)registros[i];
+        ArrayList registros = repositorioRevista.SelecionarRegistros();
+        Revista[] revistas = new Revista[registros.Count];
 
         foreach (Revista r in revistas)
         {
@@ -209,11 +207,8 @@ public class TelaReserva
             "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
-        EntidadeBase[] registros = repositorioAmigo.SelecionarRegistros();
-        Amigo[] amigos = new Amigo[registros.Length];
-
-        for (int i = 0; i < registros.Length; i++)
-            amigos[i] = (Amigo)registros[i];
+        ArrayList registros = repositorioAmigo.SelecionarRegistros();
+        Amigo[] amigos = new Amigo[registros.Count];
 
         foreach (Amigo a in amigos)
         {

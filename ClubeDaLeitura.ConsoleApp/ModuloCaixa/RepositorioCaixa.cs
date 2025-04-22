@@ -1,4 +1,5 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
@@ -6,13 +7,9 @@ public class RepositorioCaixa : RepositorioBase
 {
     public bool VerificarEtiqueta(string etiqueta, int id = -1)
     {
-        EntidadeBase[] registros = this.SelecionarRegistros();
-        Caixa[] caixas = new Caixa[registros.Length];
+        ArrayList registros = this.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            caixas[i] = (Caixa)registros[i];
-
-        foreach (Caixa c in caixas)
+        foreach (Caixa c in registros)
         {
             if (c == null) continue;
 

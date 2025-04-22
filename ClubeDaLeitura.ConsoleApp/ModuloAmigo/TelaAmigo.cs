@@ -1,6 +1,7 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.Util;
+using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
@@ -56,13 +57,10 @@ public class TelaAmigo : TelaBase
             "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
-        EntidadeBase[] registros = repositorioAmigo.SelecionarRegistros();
-        Amigo[] amigos = new Amigo[registros.Length];
+        ArrayList registros = repositorioAmigo.SelecionarRegistros();
 
-        for (int i = 0; i < registros.Length; i++)
-            amigos[i] = (Amigo)registros[i];
 
-        foreach (Amigo a in amigos)
+        foreach (Amigo a in registros)
         {
             if (a == null) continue;
 
