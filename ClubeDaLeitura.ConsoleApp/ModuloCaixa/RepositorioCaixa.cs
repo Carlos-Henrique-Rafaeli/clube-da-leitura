@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-public class RepositorioCaixa : RepositorioBase
+public class RepositorioCaixa : RepositorioBase<Caixa>
 {
     public bool VerificarEtiqueta(string etiqueta, int id = -1)
     {
-        ArrayList registros = this.SelecionarRegistros();
+        List<Caixa> registros = this.SelecionarRegistros();
 
         foreach (Caixa c in registros)
         {

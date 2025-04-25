@@ -3,9 +3,8 @@ using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloMulta;
 
-public class Multa
+public class Multa : EntidadeBase<Multa>
 {
-    public int Id { get; set; }
     public double ValorMulta { get; set; }
     public StatusMulta Status { get; set; }
     public Emprestimo Emprestimo { get; set; }
@@ -25,4 +24,13 @@ public class Multa
         ValorMulta = diasAtraso * 2.0;
     }
 
+    public override void AtualizarRegistro(Multa registroEditado)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override string Validar()
+    {
+        throw new NotImplementedException();
+    }
 }

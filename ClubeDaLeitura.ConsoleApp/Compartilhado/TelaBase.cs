@@ -2,12 +2,12 @@
 
 namespace ClubeDaLeitura.ConsoleApp.Compartilhado;
 
-public abstract class TelaBase
+public abstract class TelaBase<T> where T : EntidadeBase<T>
 {
     protected string nomeEntidade;
-    private RepositorioBase repositorio;
+    private RepositorioBase<T> repositorio;
 
-    protected TelaBase(string nomeEntidade, RepositorioBase repositorio)
+    protected TelaBase(string nomeEntidade, RepositorioBase<T> repositorio)
     {
         this.nomeEntidade = nomeEntidade;
         this.repositorio = repositorio;
@@ -60,7 +60,7 @@ public abstract class TelaBase
 
         Console.WriteLine();
 
-        EntidadeBase novoRegistro = ObterDados(false);
+        T novoRegistro = ObterDados(false);
 
         if (novoRegistro == null) return;
 
@@ -107,7 +107,7 @@ public abstract class TelaBase
         } while (!idValido);
         Console.WriteLine();
 
-        EntidadeBase registroEditado = ObterDados(true);
+        T registroEditado = ObterDados(true);
 
         if (registroEditado == null) return;
 
@@ -138,7 +138,7 @@ public abstract class TelaBase
         Notificador.ExibirMensagem("O registro foi editado com sucesso!", ConsoleColor.Green);
     }
 
-    public virtual bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
+    public virtual bool ValidarInserirEditar(T registroEditado, int idRegistro = -1)
     {
         return true;
     }
@@ -166,7 +166,7 @@ public abstract class TelaBase
 
         Console.WriteLine();
 
-        EntidadeBase registroParaExcluir = repositorio.SelecionarRegistroPorId(idRegistro);
+        T registroParaExcluir = repositorio.SelecionarRegistroPorId(idRegistro);
 
         bool validacao = ValidarExlcuir(registroParaExcluir, idRegistro);
 
@@ -186,12 +186,12 @@ public abstract class TelaBase
         Notificador.ExibirMensagem("O registro foi excluído com sucesso!", ConsoleColor.Green);
     }
 
-    public virtual void ExcluirExtras(EntidadeBase registro)
+    public virtual void ExcluirExtras(T registro)
     {
 
     }
 
-    public virtual bool ValidarExlcuir(EntidadeBase registro, int idRegistro)
+    public virtual bool ValidarExlcuir(T registro, int idRegistro)
     {
         return true;
     }
@@ -199,6 +199,6 @@ public abstract class TelaBase
 
     public abstract void VisualizarRegistros(bool exibirTitulo);
 
-    public abstract EntidadeBase ObterDados(bool validacaoExtra);
+    public abstract T ObterDados(bool validacaoExtra);
 
 }

@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
-public class TelaAmigo : TelaBase
+public class TelaAmigo : TelaBase<Amigo>, ITelaCrud
 {
     RepositorioAmigo repositorioAmigo;
 
@@ -14,10 +14,8 @@ public class TelaAmigo : TelaBase
         this.repositorioAmigo = repositorioAmigo;
     }
 
-    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro)
+    public override bool ValidarInserirEditar(Amigo amigoEditado, int idRegistro)
     {
-        Amigo amigoEditado = (Amigo)registroEditado;
-
         bool verificacao = repositorioAmigo.VerificarNomeTelefone(amigoEditado.Nome, amigoEditado.Telefone, idRegistro);
 
         if (verificacao)
@@ -29,10 +27,8 @@ public class TelaAmigo : TelaBase
         return true;
     }
 
-    public override bool ValidarExlcuir(EntidadeBase registro, int idRegistro)
+    public override bool ValidarExlcuir(Amigo amigo, int idRegistro)
     {
-        Amigo amigo = (Amigo)registro;
-
         if (amigo.TemMulta || amigo.TemEmprestimo)
         {
             Notificador.ExibirMensagem($"Não foi possivel excluir amigo pois ele contém multas/empréstimos!", ConsoleColor.Red);
@@ -57,7 +53,7 @@ public class TelaAmigo : TelaBase
             "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
-        ArrayList registros = repositorioAmigo.SelecionarRegistros();
+        List<Amigo> registros = repositorioAmigo.SelecionarRegistros();
 
 
         foreach (Amigo a in registros)

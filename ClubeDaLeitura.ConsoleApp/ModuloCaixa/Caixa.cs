@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-public class Caixa : EntidadeBase
+public class Caixa : EntidadeBase<Caixa>
 {
     public string Etiqueta { get; set; }
     public Color Cor { get; set; }
@@ -12,9 +12,9 @@ public class Caixa : EntidadeBase
 
     public Caixa(string etiqueta, Color cor, int diasEmprestimo)
     {
-        this.Etiqueta = etiqueta;
-        this.Cor = cor;
-        this.DiasEmprestimo = diasEmprestimo;
+        Etiqueta = etiqueta;
+        Cor = cor;
+        DiasEmprestimo = diasEmprestimo;
         Revistas = 0;
     }
 
@@ -33,10 +33,8 @@ public class Caixa : EntidadeBase
         return erros;
     }
 
-    public override void AtualizarRegistro(EntidadeBase registroEditado)
+    public override void AtualizarRegistro(Caixa caixa)
     {
-        Caixa caixa = (Caixa)registroEditado;
-
         Etiqueta = caixa.Etiqueta;
         Cor = caixa.Cor;
         DiasEmprestimo = caixa.DiasEmprestimo;
@@ -52,6 +50,4 @@ public class Caixa : EntidadeBase
     {
         Revistas--;
     }
-
-    
 }

@@ -2,12 +2,12 @@
 
 namespace ClubeDaLeitura.ConsoleApp.Compartilhado;
 
-public abstract class RepositorioBase
+public abstract class RepositorioBase<T> where T : EntidadeBase<T>
 {
-    private ArrayList registros = new ArrayList();
+    private List<T> registros = new List<T>();
     private int contadorIds = 0;
 
-    public void CadastrarRegistro(EntidadeBase novoRegistro)
+    public void CadastrarRegistro(T novoRegistro)
     {
         novoRegistro.Id = ++contadorIds;
 
@@ -16,15 +16,15 @@ public abstract class RepositorioBase
         registros.Add(novoRegistro);
     }
 
-    public virtual void ExtrasCadastro(EntidadeBase registro)
+    public virtual void ExtrasCadastro(T registro)
     {
 
     }
 
     
-    public bool EditarRegistro(int idRegistro, EntidadeBase registroEditado)
+    public bool EditarRegistro(int idRegistro, T registroEditado)
     {
-        foreach (EntidadeBase item in registros)
+        foreach (T item in registros)
         {
             if (item.Id == idRegistro)
             {
@@ -39,7 +39,7 @@ public abstract class RepositorioBase
 
     public bool ExcluirRegistro(int idRegistro)
     {
-        EntidadeBase registroExluir = SelecionarRegistroPorId(idRegistro);
+        T registroExluir = SelecionarRegistroPorId(idRegistro);
 
         if (registroExluir != null)
         {
@@ -50,14 +50,14 @@ public abstract class RepositorioBase
         return false;
     }
 
-    public ArrayList SelecionarRegistros()
+    public List<T> SelecionarRegistros()
     {
         return registros;
     }
 
-    public EntidadeBase SelecionarRegistroPorId(int idRegistro)
+    public T SelecionarRegistroPorId(int idRegistro)
     {
-        foreach (EntidadeBase item in registros)
+        foreach (T item in registros)
             if (item.Id == idRegistro) return item;
         
         return null;

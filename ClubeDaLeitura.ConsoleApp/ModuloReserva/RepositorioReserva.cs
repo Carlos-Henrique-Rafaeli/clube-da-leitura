@@ -4,21 +4,12 @@ using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloReserva;
 
-public class RepositorioReserva
+public class RepositorioReserva : RepositorioBase<Reserva>
 {
-    Reserva[] reservas = new Reserva[100];
-    int contadorReserva = 0;
-
-    public void Inserir(Reserva novaReserva)
-    {
-        novaReserva.Id = GeradorIds.GerarIdReserva();
-
-        reservas[contadorReserva++] = novaReserva;
-    }
-
-
     public bool VerificarRevistaAmigo(Revista revista, Amigo amigo)
     {
+        List<Reserva> reservas = this.SelecionarRegistros();
+
         foreach (Reserva r in reservas)
         {
             if (r == null) continue;
@@ -28,26 +19,10 @@ public class RepositorioReserva
         return false;
     }
 
-
-    public Reserva[] SelecionarTodos()
-    {
-        return reservas;
-    }
-
-    public Reserva SelecionarPorId(int idReserva)
-    {
-        foreach (Reserva r in reservas)
-        {
-            if (r == null) continue;
-
-            if (r.Id == idReserva) return r;
-        }
-
-        return null;
-    }
-
     public Reserva SelecionarPorRevistaAmigo(Revista revista, Amigo amigo)
     {
+        List<Reserva> reservas = this.SelecionarRegistros();
+
         foreach (Reserva r in reservas)
         {
             if (r == null) continue;

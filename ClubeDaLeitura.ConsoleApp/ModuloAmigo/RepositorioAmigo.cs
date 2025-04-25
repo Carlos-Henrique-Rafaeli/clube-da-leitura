@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
-public class RepositorioAmigo : RepositorioBase
+public class RepositorioAmigo : RepositorioBase<Amigo>
 {
     public bool VerificarNomeTelefone(string nome, string telefone, int id = -1)
     {
-        ArrayList registros = this.SelecionarRegistros();
+        List<Amigo> registros = this.SelecionarRegistros();
 
         foreach (Amigo a in registros)
         {

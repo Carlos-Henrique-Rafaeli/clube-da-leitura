@@ -3,7 +3,7 @@ using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
-public class Revista : EntidadeBase
+public class Revista : EntidadeBase<Revista>
 {
     public string Titulo { get; set; }
     public int NumeroEdicao { get; set; }
@@ -36,10 +36,8 @@ public class Revista : EntidadeBase
         return erros;
     }
 
-    public override void AtualizarRegistro(EntidadeBase registroEditado)
+    public override void AtualizarRegistro(Revista revista)
     {
-        Revista revista = (Revista)registroEditado;
-
         Titulo = revista.Titulo;
         NumeroEdicao = revista.NumeroEdicao;
         DataPublicacao = revista.DataPublicacao;
@@ -61,6 +59,4 @@ public class Revista : EntidadeBase
     {
         Status = StatusRevista.Reservada;
     }
-
-    
 }

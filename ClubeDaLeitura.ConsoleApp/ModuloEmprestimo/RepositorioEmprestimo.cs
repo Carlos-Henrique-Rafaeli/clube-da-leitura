@@ -1,23 +1,18 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
-using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
-using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
-public class RepositorioEmprestimo : RepositorioBase
+public class RepositorioEmprestimo : RepositorioBase<Emprestimo>
 {
-    public override void ExtrasCadastro(EntidadeBase registro)
+    public override void ExtrasCadastro(Emprestimo novoEmprestimo)
     {
-        Emprestimo novoEmprestimo = (Emprestimo)registro;
-
         novoEmprestimo.Revista.Emprestar();
         novoEmprestimo.Amigo.TemEmprestimo = true;
     }
     public bool VerificarEmprestimo(Emprestimo emprestimo, int idEmprestimo = -1)
     {
-        ArrayList registros = this.SelecionarRegistros();
+        List<Emprestimo> registros = this.SelecionarRegistros();
 
         foreach (Emprestimo e in registros)
         {

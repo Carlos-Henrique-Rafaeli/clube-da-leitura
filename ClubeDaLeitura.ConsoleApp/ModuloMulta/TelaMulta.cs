@@ -1,35 +1,28 @@
-﻿using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 using ClubeDaLeitura.ConsoleApp.Util;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloMulta;
 
-public class TelaMulta
+public class TelaMulta : TelaBase<Multa>, ITelaCrud
 {
-    
     public RepositorioMulta repositorioMulta;
 
-    public TelaMulta(RepositorioMulta repositorioMulta)
+    public TelaMulta(RepositorioMulta repositorioMulta) : base("Multa", repositorioMulta)
     {
         this.repositorioMulta = repositorioMulta;
     }
 
-    public string ApresentarMenu()
+    public override void MostrarOpcoes()
     {
-        ExibirCabecalho();
-
         Console.WriteLine("1 - Visualizar Multas");
         Console.WriteLine("2 - Quitar Multa");
         Console.WriteLine("S - Voltar ao Menu");
-        Console.WriteLine();
-
-        Console.Write("Digite uma opção válida: ");
-        string opcaoEscolhida = Console.ReadLine()!.ToUpper();
-        return opcaoEscolhida;
     }
 
 
-    public void Visualizar(bool exibirTitulo)
+    public override void VisualizarRegistros(bool exibirTitulo)
     {
         if (exibirTitulo)
         {
@@ -44,7 +37,7 @@ public class TelaMulta
             "Id", "Amigo", "Valor", "Status"
         );
 
-        Multa[] multas = repositorioMulta.SelecionarTodos();
+        List<Multa> multas = repositorioMulta.SelecionarRegistros();
 
         foreach (Multa m in multas)
         {
@@ -67,7 +60,7 @@ public class TelaMulta
         Console.WriteLine("Quitando Multa...");
         Console.WriteLine("---------------------------------");
 
-        Visualizar(false);
+        VisualizarRegistros(false);
 
         int idMulta;
         bool idValido;
@@ -79,7 +72,7 @@ public class TelaMulta
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        Multa multa = repositorioMulta.SelecionarPorId(idMulta);
+        Multa multa = repositorioMulta.SelecionarRegistroPorId(idMulta);
 
         if (multa == null)
         {
@@ -100,14 +93,8 @@ public class TelaMulta
         Notificador.ExibirMensagem("Multa quitada com sucesso!", ConsoleColor.Green);
     }
 
-
-
-    public void ExibirCabecalho()
+    public override Multa ObterDados(bool validacaoExtra)
     {
-        Console.Clear();
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("|       Controle de Multas      |");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine();
+        throw new NotImplementedException();
     }
 }

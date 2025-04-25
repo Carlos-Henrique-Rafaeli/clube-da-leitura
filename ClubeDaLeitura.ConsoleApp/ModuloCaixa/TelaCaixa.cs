@@ -7,7 +7,7 @@ using System.Runtime.ConstrainedExecution;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-public class TelaCaixa : TelaBase
+public class TelaCaixa : TelaBase<Caixa>, ITelaCrud
 {
     RepositorioCaixa repositorioCaixa;
 
@@ -16,10 +16,8 @@ public class TelaCaixa : TelaBase
         this.repositorioCaixa = repositorioCaixa;
     }
 
-    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
+    public override bool ValidarInserirEditar(Caixa novaCaixa, int idRegistro = -1)
     {
-        Caixa novaCaixa = (Caixa)registroEditado;
-        
         bool verificacao = repositorioCaixa.VerificarEtiqueta(novaCaixa.Etiqueta, idRegistro);
 
         if (verificacao)
@@ -31,10 +29,8 @@ public class TelaCaixa : TelaBase
         return true;
     }
 
-    public override bool ValidarExlcuir(EntidadeBase registro, int idRegistro)
+    public override bool ValidarExlcuir(Caixa caixa, int idRegistro)
     {
-        Caixa caixa = (Caixa)registro;
-
         if (caixa.Revistas > 0)
         {
             Notificador.ExibirMensagem($"Não foi possível excluir pois existem {caixa.Revistas} revista(s)!", ConsoleColor.Red);
@@ -58,7 +54,7 @@ public class TelaCaixa : TelaBase
             "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
         );
 
-        ArrayList registros = repositorioCaixa.SelecionarRegistros();
+        List<Caixa> registros = repositorioCaixa.SelecionarRegistros();
 
         foreach (Caixa c in registros)
         {

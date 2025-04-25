@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
-public class TelaEmprestimo : TelaBase
+public class TelaEmprestimo : TelaBase<Emprestimo>, ITelaCrud
 {
     RepositorioEmprestimo repositorioEmprestimo;
     RepositorioAmigo repositorioAmigo;
@@ -38,16 +38,13 @@ public class TelaEmprestimo : TelaBase
         Console.WriteLine("S - Voltar ao Menu");
     }
 
-    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
+    public override bool ValidarInserirEditar(Emprestimo novoEmprestimo, int idRegistro = -1)
     {
-        Emprestimo novoEmprestimo = (Emprestimo)registroEditado;
-
         if (novoEmprestimo.Status == StatusEmprestimo.Fechado)
         {
             Notificador.ExibirMensagem("Edição de Empréstimo teve falha!", ConsoleColor.Red);
             return false;
         }
-
 
         bool verificacao = repositorioEmprestimo.VerificarEmprestimo(novoEmprestimo, idRegistro);
 
@@ -79,7 +76,7 @@ public class TelaEmprestimo : TelaBase
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        Emprestimo emprestimo = (Emprestimo)repositorioEmprestimo.SelecionarRegistroPorId(idEmprestimo);
+        Emprestimo emprestimo = repositorioEmprestimo.SelecionarRegistroPorId(idEmprestimo);
 
         if (emprestimo == null)
         {
@@ -96,7 +93,7 @@ public class TelaEmprestimo : TelaBase
         if (emprestimo.Status == StatusEmprestimo.Atrasado)
         {
             Multa novaMulta = new Multa(emprestimo);
-            repositorioMulta.Inserir(novaMulta);
+            repositorioMulta.CadastrarRegistro(novaMulta);
         }
 
         Reserva reserva = repositorioReserva.SelecionarPorRevistaAmigo(emprestimo.Revista, emprestimo.Amigo);
@@ -124,7 +121,7 @@ public class TelaEmprestimo : TelaBase
             "Id", "Amigo", "Revista", "Data de Abertura", "Data de Devolução", "Status"
         );
 
-        ArrayList registros = repositorioEmprestimo.SelecionarRegistros();
+        List<Emprestimo> registros = repositorioEmprestimo.SelecionarRegistros();
 
         foreach (Emprestimo e in registros)
         {
@@ -157,7 +154,7 @@ public class TelaEmprestimo : TelaBase
             "Id", "Nome", "Responsável", "Telefone", "Empréstimo", "Multa"
         );
 
-        ArrayList registros = repositorioAmigo.SelecionarRegistros();
+        List<Amigo> registros = repositorioAmigo.SelecionarRegistros();
 
         foreach (Amigo a in registros)
         {
@@ -184,7 +181,7 @@ public class TelaEmprestimo : TelaBase
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        ArrayList registros = repositorioRevista.SelecionarRegistros();
+        List<Revista> registros = repositorioRevista.SelecionarRegistros();
 
         foreach (Revista r in registros)
         {
@@ -210,9 +207,9 @@ public class TelaEmprestimo : TelaBase
             idValido = int.TryParse(Console.ReadLine(), out idAmigo);
 
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
-        } while (!idValido);
 
-        Amigo amigo = (Amigo)repositorioAmigo.SelecionarRegistroPorId(idAmigo);
+        } while (!idValido);
+        Amigo amigo = repositorioAmigo.SelecionarRegistroPorId(idAmigo);
 
         if (amigo == null)
         {
@@ -243,7 +240,7 @@ public class TelaEmprestimo : TelaBase
             if (!idValido) Notificador.ExibirMensagem("Id Inválido!", ConsoleColor.Red);
         } while (!idValido);
 
-        Revista revista = (Revista)repositorioRevista.SelecionarRegistroPorId(idRevista);
+        Revista revista = repositorioRevista.SelecionarRegistroPorId(idRevista);
 
         if (revista == null)
         {

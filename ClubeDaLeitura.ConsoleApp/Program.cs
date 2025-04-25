@@ -1,4 +1,5 @@
-﻿using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
+﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
+using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
@@ -12,159 +13,79 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        RepositorioAmigo repositorioAmigo = new RepositorioAmigo();
-        RepositorioCaixa repositorioCaixa = new RepositorioCaixa();
-        RepositorioRevista repositorioRevista = new RepositorioRevista();
-        RepositorioEmprestimo repositorioEmprestimo = new RepositorioEmprestimo();
-        RepositorioMulta repositorioMulta = new RepositorioMulta();
-        RepositorioReserva repositorioReserva = new RepositorioReserva();
-
-        TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
-        TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
-        TelaRevista telaRevista = new TelaRevista(repositorioRevista, repositorioCaixa);
-        TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista, repositorioMulta, repositorioReserva);
-        TelaMulta telaMulta = new TelaMulta(repositorioMulta);
-        TelaReserva telaReserva = new TelaReserva(repositorioReserva, repositorioRevista, repositorioAmigo);
+        TelaPrincipal telaPrincipal = new TelaPrincipal();
 
         while (true)
         {
-            string opcaoSelecionada = TelaPrincipal.ApresentarMenu();
+            telaPrincipal.ApresentarMenu();
+
+            ITelaCrud telaSelecionada = telaPrincipal.ObterTela();
+
+            if (telaSelecionada == null)
+                return;
 
             bool deveRodar = true;
-
-            switch (opcaoSelecionada)
+            while (deveRodar)
             {
-                case "1":
-                    while (deveRodar)
-                    {
-                        opcaoSelecionada = telaAmigo.ApresentarMenu();
-
-                        switch (opcaoSelecionada)
-                        {
-                            case "1": telaAmigo.CadastrarRegistro(); break;
-                            
-                            case "2": telaAmigo.EditarRegistro(); break;
-                            
-                            case "3": telaAmigo.ExcluirRegistro(); break;
-
-                            case "4": telaAmigo.VisualizarRegistros(true); break;
-                            
-                            case "S": deveRodar = false; break;
-
-                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
-                        }
-                    }
-                    break;
-
-                case "2":
-                    while (deveRodar)
-                    {
-                        opcaoSelecionada = telaCaixa.ApresentarMenu();
-
-                        switch (opcaoSelecionada)
-                        {
-                            case "1": telaCaixa.CadastrarRegistro(); break;
-                            
-                            case "2": telaCaixa.EditarRegistro(); break;
-                            
-                            case "3": telaCaixa.ExcluirRegistro(); break;
-                            
-                            case "4": telaCaixa.VisualizarRegistros(true); break;
-
-                            case "S": deveRodar = false; break;
-
-                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
-                        }
-                    }
-                    break;
+                string opcaoEscolhida = telaSelecionada.ApresentarMenu();
                 
-                case "3":
-                    while (deveRodar)
+                if (telaSelecionada is TelaEmprestimo)
+                {
+                    if (opcaoEscolhida == "5")
                     {
-                        opcaoSelecionada = telaRevista.ApresentarMenu();
+                        TelaEmprestimo telaEmprestimo = (TelaEmprestimo)telaSelecionada;
 
-                        switch (opcaoSelecionada)
-                        {
-                            case "1": telaRevista.CadastrarRegistro(); break;
-                            
-                            case "2": telaRevista.EditarRegistro(); break;
-                            
-                            case "3": telaRevista.ExcluirRegistro(); break;
-
-                            case "4": telaRevista.VisualizarRegistros(true); break;
-
-                            case "S": deveRodar = false; break;
-
-                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
-                        }
+                        telaEmprestimo.RegistrarDevolucao();
                     }
-                    break;
+                }
+                else if (telaSelecionada is TelaReserva)
+                {
+                    TelaReserva telaReserva = (TelaReserva)telaSelecionada;
 
-                case "4":
-                    while (deveRodar)
-                    {
-                        opcaoSelecionada = telaEmprestimo.ApresentarMenu();
+                    if (opcaoEscolhida == "1")
+                        telaReserva.CadastrarRegistro();
 
-                        switch (opcaoSelecionada)
-                        {
-                            case "1": telaEmprestimo.CadastrarRegistro(); break;
-                            
-                            case "2": telaEmprestimo.EditarRegistro(); break;
+                    else if (opcaoEscolhida == "2")
+                        telaReserva.CancelarReserva();
 
-                            case "3": telaEmprestimo.ExcluirRegistro(); break;
-                            
-                            case "4": telaEmprestimo.VisualizarRegistros(true); break;
-                            
-                            case "5": telaEmprestimo.RegistrarDevolucao(); break;
-                                
-                            case "S": deveRodar = false; break;
+                    else if (opcaoEscolhida == "3")
+                        telaReserva.VisualizarRegistros(true);
 
-                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
-                        }
-                    }
-                    break;
+                    else if (opcaoEscolhida == "S")
+                        break;
+                    
+                    continue;
+                }
+                else if (telaSelecionada is TelaMulta)
+                {
+                    TelaMulta telaMulta = (TelaMulta)telaSelecionada;
 
-                case "5":
-                    while (deveRodar)
-                    {
-                        opcaoSelecionada = telaReserva.ApresentarMenu();
+                    if (opcaoEscolhida == "1")
+                        telaMulta.VisualizarRegistros(true);
 
-                        switch (opcaoSelecionada)
-                        {
-                            case "1": telaReserva.CriarReserva(); break;
+                    else if (opcaoEscolhida == "2")
+                        telaMulta.QuitarMulta();
 
-                            case "2": telaReserva.CancelarReserva(); break;
+                    else if (opcaoEscolhida == "S")
+                        break;
 
-                            case "3": telaReserva.Visualizar(true); break;
+                    continue;
+                }
 
-                            case "S": deveRodar = false; break;
+                switch (opcaoEscolhida)
+                {
+                    case "1": telaSelecionada.CadastrarRegistro(); break;
 
-                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
-                        }
-                    }
-                    break;
+                    case "2": telaSelecionada.EditarRegistro(); break;
 
-                case "6":
-                    while (deveRodar)
-                    {
-                        opcaoSelecionada = telaMulta.ApresentarMenu();
+                    case "3": telaSelecionada.ExcluirRegistro(); break;
 
-                        switch (opcaoSelecionada)
-                        {
-                            case "1": telaMulta.Visualizar(true); break;
+                    case "4": telaSelecionada.VisualizarRegistros(true); break;
 
-                            case "2": telaMulta.QuitarMulta(); break;
+                    case "S": deveRodar = false; break;
 
-                            case "S": deveRodar = false; break;
-
-                            default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
-                        }
-                    }
-                    break;
-
-                case "S": return;
-
-                default: Console.WriteLine("Opção Inválida!"); Console.ReadLine(); break;
+                    default: Notificador.ExibirMensagem("Opção inválida!", ConsoleColor.Red); break;
+                }
             }
         }
     }

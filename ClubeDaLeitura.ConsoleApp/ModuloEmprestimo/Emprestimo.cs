@@ -1,11 +1,10 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
 using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
-using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
-public class Emprestimo : EntidadeBase
+public class Emprestimo : EntidadeBase<Emprestimo>
 {
     public Amigo Amigo { get; set; }
     public Revista Revista { get; set; }
@@ -15,9 +14,9 @@ public class Emprestimo : EntidadeBase
 
     public Emprestimo(Amigo amigo, Revista revista, DateTime data)
     {
-        this.Amigo = amigo;
-        this.Revista = revista;
-        this.Data = data;
+        Amigo = amigo;
+        Revista = revista;
+        Data = data;
         DataDevolucao = ObterDataDevolucao();
         Status = StatusEmprestimo.Aberto;
     }
@@ -33,10 +32,8 @@ public class Emprestimo : EntidadeBase
         return erros;
     }
 
-    public override void AtualizarRegistro(EntidadeBase registroEditado)
+    public override void AtualizarRegistro(Emprestimo emprestimo)
     {
-        Emprestimo emprestimo = (Emprestimo)registroEditado;
-
         Amigo = emprestimo.Amigo;
         Revista = emprestimo.Revista;
         Data = emprestimo.Data;
@@ -65,6 +62,4 @@ public class Emprestimo : EntidadeBase
 
         Revista.Devolver();
     }
-
-    
 }

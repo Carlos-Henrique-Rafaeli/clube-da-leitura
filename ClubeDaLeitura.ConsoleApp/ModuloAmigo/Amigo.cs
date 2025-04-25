@@ -1,9 +1,8 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
-public class Amigo : EntidadeBase
+public class Amigo : EntidadeBase<Amigo>
 {
     public string Nome { get; set; }
     public string Responsavel { get; set; }
@@ -57,10 +56,8 @@ public class Amigo : EntidadeBase
         return opcao;
     }
 
-    public override void AtualizarRegistro(EntidadeBase registroEditado)
+    public override void AtualizarRegistro(Amigo novoAmigo)
     {
-        Amigo novoAmigo = (Amigo)registroEditado;
-
         Nome = novoAmigo.Nome;
         Responsavel = novoAmigo.Responsavel;
         Telefone = novoAmigo.Telefone;

@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
-public class TelaRevista : TelaBase
+public class TelaRevista : TelaBase<Revista>, ITelaCrud
 {
     RepositorioRevista repositorioRevista;
     RepositorioCaixa repositorioCaixa;
@@ -21,10 +21,8 @@ public class TelaRevista : TelaBase
         this.repositorioCaixa = repositorioCaixa;
     }
 
-    public override bool ValidarInserirEditar(EntidadeBase registroEditado, int idRegistro = -1)
+    public override bool ValidarInserirEditar(Revista novaRevista, int idRegistro = -1)
     {
-        Revista novaRevista = (Revista)registroEditado;
-
         bool verificacao = repositorioRevista.VerificarTituloEdicao(novaRevista.Titulo, novaRevista.NumeroEdicao);
 
         if (verificacao)
@@ -35,10 +33,8 @@ public class TelaRevista : TelaBase
         return true;
     }
 
-    public override bool ValidarExlcuir(EntidadeBase registro, int idRegistro)
+    public override bool ValidarExlcuir(Revista novaRevista, int idRegistro)
     {
-        Revista novaRevista = (Revista)registro;
-
         bool verificacao = novaRevista.Status == StatusRevista.Disponível;
 
         if (verificacao)
@@ -47,14 +43,10 @@ public class TelaRevista : TelaBase
             return false;
         }
         return true;
-
-
     }
 
-    public override void ExcluirExtras(EntidadeBase registro)
+    public override void ExcluirExtras(Revista revista)
     {
-        Revista revista = (Revista)registro;
-
         revista.Caixa.RemoverRevista();
     }
 
@@ -73,7 +65,7 @@ public class TelaRevista : TelaBase
             "Id", "Título", "Num. Edição", "Ano de Publicação", "Status", "Caixa"
         );
 
-        ArrayList registros = repositorioRevista.SelecionarRegistros();
+        List<Revista> registros = repositorioRevista.SelecionarRegistros();
 
         foreach (Revista r in registros)
         {
@@ -99,7 +91,7 @@ public class TelaRevista : TelaBase
             "Id", "Etiqueta", "Cor", "Dias de Empréstimo"
         );
 
-        ArrayList registros = repositorioCaixa.SelecionarRegistros();
+        List<Caixa> registros = repositorioCaixa.SelecionarRegistros();
 
         foreach (Caixa c in registros)
         {
@@ -115,7 +107,7 @@ public class TelaRevista : TelaBase
         }
     }
 
-    public override EntidadeBase ObterDados(bool validacaoExtra)
+    public override Revista ObterDados(bool validacaoExtra)
     {
         Console.Write("Digite o título da Revista: ");
         string titulo = Console.ReadLine()!;
