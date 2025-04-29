@@ -11,7 +11,11 @@ public class Revista : EntidadeBase<Revista>
     public StatusRevista Status { get; set; }
     public Caixa Caixa { get; set; }
 
-    public Revista(string titulo, int numeroEdicao, DateTime dataPublicacao, Caixa caixa, StatusRevista status = StatusRevista.Disponível)
+    public Revista()
+    {
+    }
+
+    public Revista(string titulo, int numeroEdicao, DateTime dataPublicacao, Caixa caixa, StatusRevista status = StatusRevista.Disponível) : this()
     {
         Titulo = titulo;
         NumeroEdicao = numeroEdicao;

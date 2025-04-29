@@ -10,7 +10,11 @@ public class Caixa : EntidadeBase<Caixa>
     public int DiasEmprestimo { get; set; }
     public int Revistas { get; set; }
 
-    public Caixa(string etiqueta, Color cor, int diasEmprestimo)
+    public Caixa()
+    {
+    }
+
+    public Caixa(string etiqueta, Color cor, int diasEmprestimo) : this()
     {
         Etiqueta = etiqueta;
         Cor = cor;

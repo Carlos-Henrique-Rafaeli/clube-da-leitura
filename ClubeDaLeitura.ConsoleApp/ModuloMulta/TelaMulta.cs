@@ -7,9 +7,9 @@ namespace ClubeDaLeitura.ConsoleApp.ModuloMulta;
 
 public class TelaMulta : TelaBase<Multa>, ITelaCrud
 {
-    public RepositorioMulta repositorioMulta;
+    public IRepositorioMulta repositorioMulta;
 
-    public TelaMulta(RepositorioMulta repositorioMulta) : base("Multa", repositorioMulta)
+    public TelaMulta(IRepositorioMulta repositorioMulta) : base("Multa", repositorioMulta)
     {
         this.repositorioMulta = repositorioMulta;
     }

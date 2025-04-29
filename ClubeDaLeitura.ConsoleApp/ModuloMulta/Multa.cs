@@ -9,7 +9,10 @@ public class Multa : EntidadeBase<Multa>
     public StatusMulta Status { get; set; }
     public Emprestimo Emprestimo { get; set; }
 
-    public Multa(Emprestimo emprestimo)
+    public Multa()
+    {
+    }
+    public Multa(Emprestimo emprestimo) : this()
     {
         this.Emprestimo = emprestimo;
         emprestimo.Amigo.TemMulta = true;

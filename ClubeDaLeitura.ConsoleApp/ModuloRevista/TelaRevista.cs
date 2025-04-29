@@ -10,11 +10,11 @@ namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
 public class TelaRevista : TelaBase<Revista>, ITelaCrud
 {
-    RepositorioRevista repositorioRevista;
-    RepositorioCaixa repositorioCaixa;
+    IRepositorioRevista repositorioRevista;
+    IRepositorioCaixa repositorioCaixa;
 
-    public TelaRevista(RepositorioRevista repositorioRevista, 
-        RepositorioCaixa repositorioCaixa) 
+    public TelaRevista(IRepositorioRevista repositorioRevista,
+        IRepositorioCaixa repositorioCaixa) 
         : base("Revista", repositorioRevista)
     {
         this.repositorioRevista = repositorioRevista;

@@ -3,8 +3,18 @@ using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloAmigo;
 
-public class RepositorioAmigo : RepositorioBase<Amigo>
+public class RepositorioAmigo : RepositorioBase<Amigo>, IRepositorioAmigo
 {
+    public RepositorioAmigo(ContextoDados contexto) : base(contexto)
+    {
+        
+    }
+
+    protected override List<Amigo> ObterRegistros()
+    {
+        return contexto.Amigos;
+    }
+
     public bool VerificarNomeTelefone(string nome, string telefone, int id = -1)
     {
         List<Amigo> registros = this.SelecionarRegistros();

@@ -1,10 +1,18 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using System.Collections;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloCaixa;
 
-public class RepositorioCaixa : RepositorioBase<Caixa>
+public class RepositorioCaixa : RepositorioBase<Caixa>, IRepositorioCaixa
 {
+    public RepositorioCaixa(ContextoDados contexto) : base(contexto)
+    {
+    }
+
+    protected override List<Caixa> ObterRegistros()
+    {
+        return contexto.Caixas;
+    }
+
     public bool VerificarEtiqueta(string etiqueta, int id = -1)
     {
         List<Caixa> registros = this.SelecionarRegistros();

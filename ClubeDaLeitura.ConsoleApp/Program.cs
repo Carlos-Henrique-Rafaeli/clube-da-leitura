@@ -22,7 +22,13 @@ internal class Program
             ITelaCrud telaSelecionada = telaPrincipal.ObterTela();
 
             if (telaSelecionada == null)
-                return;
+            {
+                if (telaPrincipal.OpcaoPrincipal == "S")
+                    return;
+
+                Notificador.ExibirMensagem("Opção inválida!", ConsoleColor.Red);
+                continue;
+            }
 
             bool deveRodar = true;
             while (deveRodar)

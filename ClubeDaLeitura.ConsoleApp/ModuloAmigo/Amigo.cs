@@ -12,7 +12,11 @@ public class Amigo : EntidadeBase<Amigo>
 
     private int[] telefoneValido = [12, 13];
 
-    public Amigo(string nome, string responsavel, string telefone)
+    public Amigo()
+    {
+    }
+
+    public Amigo(string nome, string responsavel, string telefone) : this()
     {
         Nome = nome;
         Responsavel = responsavel;

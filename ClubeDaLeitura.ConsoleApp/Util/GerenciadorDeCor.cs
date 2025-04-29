@@ -8,10 +8,12 @@ public static class GerenciadorDeCor
     {
         ConsoleColor consoleCor;
 
-        if (cor == Color.Red) consoleCor = ConsoleColor.Red;
-        else if (cor == Color.Green) consoleCor = ConsoleColor.Green;
-        else if (cor == Color.Blue) consoleCor = ConsoleColor.Blue;
-        else if (cor == Color.Yellow) consoleCor = ConsoleColor.Yellow;
+        int argb = cor.ToArgb();
+
+        if (argb == Color.Red.ToArgb()) consoleCor = ConsoleColor.Red;
+        else if (argb == Color.Green.ToArgb()) consoleCor = ConsoleColor.Green;
+        else if (argb == Color.Blue.ToArgb()) consoleCor = ConsoleColor.Blue;
+        else if (argb == Color.Yellow.ToArgb()) consoleCor = ConsoleColor.Yellow;
         else consoleCor = ConsoleColor.White;
 
         return consoleCor;
@@ -21,10 +23,12 @@ public static class GerenciadorDeCor
     {
         string corString;
 
-        if (cor == Color.Red) corString = "Vermelho";
-        else if (cor == Color.Green) corString = "Verde";
-        else if (cor == Color.Blue) corString = "Azul";
-        else if (cor == Color.Yellow) corString = "Amarelo";
+        int argb = cor.ToArgb();
+
+        if (argb == Color.Red.ToArgb()) corString = "Vermelho";
+        else if (argb == Color.Green.ToArgb()) corString = "Verde";
+        else if (argb == Color.Blue.ToArgb()) corString = "Azul";
+        else if (argb == Color.Yellow.ToArgb()) corString = "Amarelo";
         else corString = "Branco";
 
         return corString;

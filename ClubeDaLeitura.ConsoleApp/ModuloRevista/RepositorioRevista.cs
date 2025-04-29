@@ -1,13 +1,19 @@
 ﻿using ClubeDaLeitura.ConsoleApp.Compartilhado;
-using ClubeDaLeitura.ConsoleApp.ModuloAmigo;
-using ClubeDaLeitura.ConsoleApp.ModuloCaixa;
-using ClubeDaLeitura.ConsoleApp.ModuloEmprestimo;
-using System.Collections;
+using ClubeDaLeitura.ConsoleApp.ModuloReserva;
 
 namespace ClubeDaLeitura.ConsoleApp.ModuloRevista;
 
-public class RepositorioRevista : RepositorioBase<Revista>
+public class RepositorioRevista : RepositorioBase<Revista>, IRepositorioRevista
 {
+    public RepositorioRevista(ContextoDados contexto) : base(contexto)
+    {
+    }
+
+    protected override List<Revista> ObterRegistros()
+    {
+        return contexto.Revistas;
+    }
+
     public override void ExtrasCadastro(Revista novaRevista)
     {
         novaRevista.Caixa.AdicionarRevista();

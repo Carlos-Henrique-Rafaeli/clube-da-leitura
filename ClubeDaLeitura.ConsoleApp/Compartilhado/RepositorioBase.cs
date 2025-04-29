@@ -7,6 +7,27 @@ public abstract class RepositorioBase<T> where T : EntidadeBase<T>
     private List<T> registros = new List<T>();
     private int contadorIds = 0;
 
+    protected ContextoDados contexto;
+
+    protected RepositorioBase(ContextoDados contexto)
+    {
+        this.contexto = contexto;
+
+        registros = ObterRegistros();
+
+        int maiorId = 0;
+
+        foreach (var registro in registros)
+        {
+            if (registro.Id > maiorId)
+                maiorId = registro.Id;
+        }
+
+        contadorIds = maiorId;
+    }
+
+    protected abstract List<T> ObterRegistros();
+
     public void CadastrarRegistro(T novoRegistro)
     {
         novoRegistro.Id = ++contadorIds;
@@ -14,6 +35,8 @@ public abstract class RepositorioBase<T> where T : EntidadeBase<T>
         ExtrasCadastro(novoRegistro);
 
         registros.Add(novoRegistro);
+
+        contexto.Salvar();
     }
 
     public virtual void ExtrasCadastro(T registro)
@@ -30,6 +53,8 @@ public abstract class RepositorioBase<T> where T : EntidadeBase<T>
             {
                 item.AtualizarRegistro(registroEditado);
 
+                contexto.Salvar();
+
                 return true;
             }
         }
@@ -44,6 +69,9 @@ public abstract class RepositorioBase<T> where T : EntidadeBase<T>
         if (registroExluir != null)
         {
             registros.Remove(registroExluir);
+
+            contexto.Salvar();
+
             return true;
         }
 

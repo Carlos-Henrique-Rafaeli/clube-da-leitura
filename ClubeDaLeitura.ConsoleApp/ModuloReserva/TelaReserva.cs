@@ -9,12 +9,12 @@ namespace ClubeDaLeitura.ConsoleApp.ModuloReserva;
 
 public class TelaReserva : TelaBase<Reserva>, ITelaCrud
 {
-    public RepositorioReserva repositorioReserva;
-    public RepositorioRevista repositorioRevista;
-    public RepositorioAmigo repositorioAmigo;
+    public IRepositorioReserva repositorioReserva;
+    public IRepositorioRevista repositorioRevista;
+    public IRepositorioAmigo repositorioAmigo;
 
-    public TelaReserva(RepositorioReserva repositorioReserva, 
-        RepositorioRevista repositorioRevista, RepositorioAmigo repositorioAmigo) 
+    public TelaReserva(IRepositorioReserva repositorioReserva,
+        IRepositorioRevista repositorioRevista, IRepositorioAmigo repositorioAmigo) 
         : base("Reserva", repositorioReserva)
     {
         this.repositorioReserva = repositorioReserva;

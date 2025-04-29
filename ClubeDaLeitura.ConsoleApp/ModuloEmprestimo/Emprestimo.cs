@@ -12,7 +12,11 @@ public class Emprestimo : EntidadeBase<Emprestimo>
     public DateTime DataDevolucao { get; set; }
     public StatusEmprestimo Status { get; set; }
 
-    public Emprestimo(Amigo amigo, Revista revista, DateTime data)
+    public Emprestimo()
+    {
+    }
+
+    public Emprestimo(Amigo amigo, Revista revista, DateTime data) : this()
     {
         Amigo = amigo;
         Revista = revista;

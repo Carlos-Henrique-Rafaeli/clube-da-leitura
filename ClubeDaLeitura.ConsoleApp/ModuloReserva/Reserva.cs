@@ -11,7 +11,10 @@ public class Reserva : EntidadeBase<Reserva>
     public DateTime DataReserva { get; set; }
     public StatusReserva Status { get; set; }
 
-    public Reserva(Amigo amigo, Revista revista)
+    public Reserva()
+    {
+    }
+    public Reserva(Amigo amigo, Revista revista) : this()
     {
         Amigo = amigo;
         Revista = revista;
@@ -23,11 +26,11 @@ public class Reserva : EntidadeBase<Reserva>
 
     public override string Validar()
     {
-        throw new NotImplementedException();
+        return "";
     }
 
     public override void AtualizarRegistro(Reserva registroEditado)
     {
-        throw new NotImplementedException();
+        
     }
 }

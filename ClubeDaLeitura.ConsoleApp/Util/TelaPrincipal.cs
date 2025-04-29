@@ -10,13 +10,28 @@ namespace ClubeDaLeitura.ConsoleApp.Util;
 
 public class TelaPrincipal
 {
-    private RepositorioAmigo repositorioAmigo = new RepositorioAmigo();
-    private RepositorioCaixa repositorioCaixa = new RepositorioCaixa();
-    private RepositorioRevista repositorioRevista = new RepositorioRevista();
-    private RepositorioEmprestimo repositorioEmprestimo = new RepositorioEmprestimo();
-    private RepositorioMulta repositorioMulta = new RepositorioMulta();
-    private RepositorioReserva repositorioReserva = new RepositorioReserva();
-    private string opcaoPrincipal;
+    private RepositorioAmigo repositorioAmigo;
+    private RepositorioCaixa repositorioCaixa;
+    private RepositorioRevista repositorioRevista;
+    private RepositorioEmprestimo repositorioEmprestimo;
+    private RepositorioMulta repositorioMulta;
+    private RepositorioReserva repositorioReserva;
+
+    private ContextoDados contexto;
+    
+    public string OpcaoPrincipal { get; private set; }
+
+    public TelaPrincipal()
+    {
+        this.contexto = new ContextoDados(true);
+        this.repositorioAmigo = new RepositorioAmigo(contexto);
+        this.repositorioCaixa = new RepositorioCaixa(contexto);
+        this.repositorioRevista = new RepositorioRevista(contexto);
+        this.repositorioEmprestimo = new RepositorioEmprestimo(contexto);
+        this.repositorioMulta = new RepositorioMulta(contexto);
+        this.repositorioReserva = new RepositorioReserva(contexto);
+    }
+
 
     public void ApresentarMenu()
     {
@@ -36,22 +51,22 @@ public class TelaPrincipal
         Console.WriteLine();
 
         Console.Write("Digite uma opção válida: ");
-        opcaoPrincipal = Console.ReadLine()!.ToUpper();
+        OpcaoPrincipal = Console.ReadLine()!.ToUpper();
     }
 
     public ITelaCrud ObterTela()
     {
-        if (opcaoPrincipal == "1")
+        if (OpcaoPrincipal == "1")
             return new TelaAmigo(repositorioAmigo);
-        else if (opcaoPrincipal == "2")
+        else if (OpcaoPrincipal == "2")
             return new TelaCaixa(repositorioCaixa);
-        else if (opcaoPrincipal == "3")
+        else if (OpcaoPrincipal == "3")
             return new TelaRevista(repositorioRevista, repositorioCaixa);
-        else if (opcaoPrincipal == "4")
+        else if (OpcaoPrincipal == "4")
             return new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista, repositorioMulta, repositorioReserva);
-        else if (opcaoPrincipal == "5")
+        else if (OpcaoPrincipal == "5")
             return new TelaReserva(repositorioReserva, repositorioRevista, repositorioAmigo);
-        else if (opcaoPrincipal == "6")
+        else if (OpcaoPrincipal == "6")
             return new TelaMulta(repositorioMulta);
 
         return null;
